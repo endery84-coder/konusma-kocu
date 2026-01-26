@@ -9,81 +9,67 @@ interface AudioWaveformProps {
     className?: string;
 }
 
-export default function AudioWaveform({ isRecording, audioURL, className = '' }: AudioWaveformProps) {
+export default function AudioWaveform({ isRecording, className = '' }: AudioWaveformProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number>(0);
-    const analyserRef = useRef<AnalyserNode | null>(null);
-    const dataArrayRef = useRef<Uint8Array | null>(null);
 
     useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
         if (!isRecording) {
-            // Show static waveform when not recording
-            const canvas = canvasRef.current;
-            if (!canvas) return;
+            // Static waveform
+            const width = canvas.width;
+            const height = canvas.height;
 
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
+            ctx.clearRect(0, 0, width, height);
 
-            const draw = () => {
-                const width = canvas.width;
-                const height = canvas.height;
+            const barCount = 50;
+            const barWidth = width / barCount - 2;
 
-                ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < barCount; i++) {
+                const barHeight = Math.random() * 10 + 5;
+                const x = i * (barWidth + 2);
+                const y = (height - barHeight) / 2;
 
-                // Draw placeholder bars
-                const barCount = 50;
-                const barWidth = width / barCount - 2;
+                const gradient = ctx.createLinearGradient(0, y, 0, y + barHeight);
+                gradient.addColorStop(0, '#14b8a6');
+                gradient.addColorStop(1, '#06b6d4');
 
-                for (let i = 0; i < barCount; i++) {
-                    const barHeight = Math.random() * 10 + 5;
-                    const x = i * (barWidth + 2);
-                    const y = (height - barHeight) / 2;
-
-                    const gradient = ctx.createLinearGradient(0, y, 0, y + barHeight);
-                    gradient.addColorStop(0, '#14b8a6');
-                    gradient.addColorStop(1, '#06b6d4');
-
-                    ctx.fillStyle = gradient;
-                    ctx.beginPath();
-                    ctx.roundRect(x, y, barWidth, barHeight, 2);
-                    ctx.fill();
-                }
-            };
-
-            draw();
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.roundRect(x, y, barWidth, barHeight, 2);
+                ctx.fill();
+            }
             return;
         }
 
-        // Live waveform when recording
-        const setupAnalyser = async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const audioContext = new AudioContext();
-                const source = audioContext.createMediaStreamSource(stream);
-                const analyser = audioContext.createAnalyser();
+        // Live waveform
+        let audioContext: AudioContext | null = null;
+        let analyser: AnalyserNode | null = null;
+        let dataArray: Uint8Array | null = null;
+        let stream: MediaStream | null = null;
 
+        const setup = async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioContext = new AudioContext();
+                const source = audioContext.createMediaStreamSource(stream);
+                analyser = audioContext.createAnalyser();
                 analyser.fftSize = 256;
                 source.connect(analyser);
-
-                analyserRef.current = analyser;
-                dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount);
-
-                const canvas = canvasRef.current;
-                if (!canvas) return;
-
-                const ctx = canvas.getContext('2d');
-                if (!ctx) return;
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
 
                 const draw = () => {
-                    if (!isRecording) return;
+                    if (!isRecording || !analyser || !dataArray) return;
 
                     animationRef.current = requestAnimationFrame(draw);
 
-                    const analyser = analyserRef.current;
-                    const dataArray = dataArrayRef.current;
-                    if (!analyser || !dataArray) return;
-
-                    analyser.getByteFrequencyData(dataArray as Uint8Array<ArrayBuffer>);
+                    // @ts-ignore
+                    analyser.getByteFrequencyData(dataArray);
 
                     const width = canvas.width;
                     const height = canvas.height;
@@ -111,20 +97,17 @@ export default function AudioWaveform({ isRecording, audioURL, className = '' }:
                 };
 
                 draw();
-
-                return () => {
-                    stream.getTracks().forEach(track => track.stop());
-                    audioContext.close();
-                };
             } catch (err) {
                 console.error('Waveform error:', err);
             }
         };
 
-        setupAnalyser();
+        setup();
 
         return () => {
             cancelAnimationFrame(animationRef.current);
+            stream?.getTracks().forEach(track => track.stop());
+            audioContext?.close();
         };
     }, [isRecording]);
 
