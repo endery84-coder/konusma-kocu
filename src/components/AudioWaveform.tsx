@@ -83,7 +83,7 @@ export default function AudioWaveform({ isRecording, audioURL, className = '' }:
                     const dataArray = dataArrayRef.current;
                     if (!analyser || !dataArray) return;
 
-                    analyser.getByteFrequencyData(dataArray);
+                    analyser.getByteFrequencyData(dataArray as Uint8Array<ArrayBuffer>);
 
                     const width = canvas.width;
                     const height = canvas.height;
