@@ -1,0 +1,359 @@
+{
+    "common": {
+        "appName": "KonuşKoç",
+        "loading": "Yükleniyor...",
+        "error": "Bir hata oluştu",
+        "retry": "Tekrar Dene",
+        "save": "Kaydet",
+        "cancel": "İptal",
+        "confirm": "Onayla",
+        "delete": "Sil",
+        "edit": "Düzenle",
+        "close": "Kapat",
+        "next": "İleri",
+        "back": "Geri",
+        "skip": "Atla",
+        "done": "Tamamla",
+        "start": "Başla",
+        "continue": "Devam Et",
+        "yes": "Evet",
+        "no": "Hayır",
+        "search": "Ara",
+        "filter": "Filtrele",
+        "all": "Tümü",
+        "free": "Ücretsiz",
+        "premium": "Premium",
+        "minutes": "dakika",
+        "hours": "saat",
+        "days": "gün",
+        "today": "Bugün",
+        "yesterday": "Dün",
+        "thisWeek": "Bu Hafta"
+    },
+    "auth": {
+        "welcome": "Hoş Geldiniz",
+        "signIn": "Giriş Yap",
+        "signUp": "Kayıt Ol",
+        "signOut": "Çıkış Yap",
+        "email": "E-posta",
+        "password": "Şifre",
+        "confirmPassword": "Şifre Tekrar",
+        "fullName": "Ad Soyad",
+        "forgotPassword": "Şifremi Unuttum",
+        "noAccount": "Hesabınız yok mu?",
+        "haveAccount": "Zaten hesabınız var mı?",
+        "termsOfService": "Kullanım Koşulları",
+        "privacyPolicy": "Gizlilik Politikası"
+    },
+    "navigation": {
+        "home": "Ana Sayfa",
+        "exercises": "Egzersizler",
+        "record": "Kayıt",
+        "progress": "İlerleme",
+        "profile": "Profil"
+    },
+    "home": {
+        "greeting": {
+            "morning": "Günaydın",
+            "afternoon": "İyi günler",
+            "evening": "İyi akşamlar",
+            "night": "İyi geceler"
+        },
+        "streak": {
+            "title": "Günlük Seri",
+            "days": "{count} gün",
+            "keepGoing": "Devam et!",
+            "atRisk": "Bugün pratik yap, serini koru!"
+        },
+        "dailyGoal": {
+            "title": "Günlük Hedef",
+            "progress": "{current} / {target} dakika",
+            "completed": "Tebrikler! Bugünkü hedefini tamamladın!"
+        },
+        "continueExercise": "Kaldığın Yerden Devam Et",
+        "recommendedExercises": "Sana Özel Öneriler",
+        "popularExercises": "Popüler Egzersizler",
+        "dailyQuote": "Günün Sözü"
+    },
+    "exercises": {
+        "title": "Egzersizler",
+        "searchPlaceholder": "Egzersiz ara...",
+        "categories": {
+            "all": "Tümü",
+            "breathing": "Nefes",
+            "fluency": "Akıcılık",
+            "diction": "Diksiyon",
+            "reading": "Okuma",
+            "comprehension": "Anlama",
+            "pronunciation": "Telaffuz",
+            "children": "Çocuklar"
+        },
+        "difficulty": {
+            "beginner": "Başlangıç",
+            "intermediate": "Orta",
+            "advanced": "İleri"
+        },
+        "duration": "{minutes} dk",
+        "xpReward": "+{xp} XP",
+        "locked": "Premium",
+        "completed": "Tamamlandı",
+        "start": "Başla",
+        "continue": "Devam Et",
+        "instructions": "Nasıl Yapılır?",
+        "tips": "İpuçları",
+        "complete": {
+            "title": "Tebrikler!",
+            "subtitle": "Egzersizi tamamladın",
+            "xpEarned": "+{xp} XP kazandın",
+            "timeSpent": "{minutes} dakika",
+            "streak": "{days} gün seri",
+            "nextExercise": "Sonraki Egzersiz",
+            "backToList": "Egzersizlere Dön"
+        }
+    },
+    "record": {
+        "title": "Ses Kaydı",
+        "practiceText": "Okuma Metni",
+        "changeText": "Değiştir",
+        "recording": "Kayıt yapılıyor...",
+        "paused": "Duraklatıldı",
+        "tapToRecord": "Kayıt başlatmak için dokun",
+        "save": "Kaydı Kaydet",
+        "discard": "Vazgeç",
+        "play": "Oynat",
+        "pause": "Duraklat",
+        "stop": "Durdur",
+        "reset": "Sıfırla",
+        "tools": {
+            "title": "Araçlar",
+            "daf": {
+                "name": "DAF Modu",
+                "description": "Gecikmeli ses geri bildirimi",
+                "delay": "Gecikme: {ms}ms"
+            },
+            "metronome": {
+                "name": "Metronom",
+                "description": "Ritmik konuşma pratiği",
+                "bpm": "{bpm} BPM",
+                "slow": "Yavaş",
+                "fast": "Hızlı"
+            }
+        },
+        "saveModal": {
+            "title": "Kaydı Kaydet",
+            "titleLabel": "Başlık",
+            "titlePlaceholder": "Kayıt başlığı (opsiyonel)",
+            "saving": "Kaydediliyor..."
+        },
+        "history": {
+            "title": "Kayıt Geçmişi",
+            "empty": "Henüz kayıt yok",
+            "emptyDesc": "İlk kaydınızı yapın!"
+        }
+    },
+    "progress": {
+        "title": "İlerleme",
+        "streak": {
+            "current": "Mevcut Seri",
+            "longest": "En Uzun Seri",
+            "total": "Toplam Gün"
+        },
+        "stats": {
+            "totalTime": "Toplam Süre",
+            "exercises": "Egzersiz",
+            "recordings": "Kayıt",
+            "xp": "XP"
+        },
+        "weeklyActivity": "Haftalık Aktivite",
+        "monthlyCalendar": "Aylık Takvim",
+        "recentActivities": "Son Aktiviteler",
+        "achievements": "Başarılar",
+        "viewAll": "Tümünü Gör",
+        "noActivity": "Henüz aktivite yok"
+    },
+    "achievements": {
+        "title": "Rozetler",
+        "earned": "Kazanılan",
+        "locked": "Kilitli",
+        "progress": "{current} / {total}",
+        "categories": {
+            "streak": "Seri",
+            "exercise": "Egzersiz",
+            "time": "Süre",
+            "recording": "Kayıt",
+            "level": "Seviye"
+        },
+        "earnedAt": "Kazanıldı: {date}",
+        "xpReward": "+{xp} XP ödül"
+    },
+    "profile": {
+        "title": "Profil",
+        "editProfile": "Profili Düzenle",
+        "level": "Seviye {level}",
+        "xpToNext": "Sonraki seviyeye {xp} XP",
+        "stats": {
+            "streak": "Seri",
+            "totalTime": "Toplam Süre",
+            "badges": "Rozet"
+        },
+        "subscription": {
+            "free": "Ücretsiz Plan",
+            "premium": "Premium",
+            "expires": "Bitiş: {date}",
+            "upgrade": "Premium'a Geç"
+        },
+        "quickLinks": {
+            "settings": "Ayarlar",
+            "help": "Yardım ve Destek",
+            "rate": "Uygulamayı Puanla"
+        }
+    },
+    "settings": {
+        "title": "Ayarlar",
+        "account": {
+            "title": "Hesap",
+            "profile": "Profil Bilgileri",
+            "email": "E-posta Değiştir",
+            "password": "Şifre Değiştir",
+            "deleteAccount": "Hesabı Sil"
+        },
+        "preferences": {
+            "title": "Tercihler",
+            "goals": "Hedeflerim",
+            "dailyGoal": "Günlük Hedef",
+            "reminder": "Hatırlatma Saati"
+        },
+        "language": {
+            "title": "Dil ve Bölge",
+            "interface": "Arayüz Dili",
+            "native": "Ana Dil",
+            "selectLanguage": "Dil Seçin"
+        },
+        "privacy": {
+            "title": "Gizlilik",
+            "recording": "Ses Kaydı Tercihleri",
+            "deleteRecordings": "Tüm Kayıtlarımı Sil"
+        },
+        "notifications": {
+            "title": "Bildirimler",
+            "push": "Anlık Bildirimler",
+            "streakReminder": "Seri Hatırlatması"
+        },
+        "appearance": {
+            "title": "Görünüm",
+            "theme": "Tema",
+            "themeSystem": "Sistem",
+            "themeLight": "Açık",
+            "themeDark": "Koyu"
+        },
+        "about": {
+            "title": "Hakkında",
+            "version": "Sürüm",
+            "terms": "Kullanım Koşulları",
+            "privacy": "Gizlilik Politikası"
+        },
+        "signOut": "Çıkış Yap"
+    },
+    "premium": {
+        "title": "Premium",
+        "subtitle": "Tüm özelliklere erişin",
+        "features": {
+            "unlimited": "Sınırsız egzersiz ve kayıt",
+            "allModules": "Tüm modüllere erişim",
+            "aiAnalysis": "AI destekli ses analizi",
+            "noAds": "Reklamsız deneyim"
+        },
+        "plans": {
+            "monthly": "Aylık",
+            "yearly": "Yıllık",
+            "family": "Aile"
+        },
+        "trial": "7 gün ücretsiz dene",
+        "subscribe": "Abone Ol"
+    },
+    "onboarding": {
+        "welcome": {
+            "title": "KonuşKoç'a Hoş Geldiniz",
+            "subtitle": "Konuşma ve okuma becerilerinizi geliştirin",
+            "getStarted": "Başlayalım"
+        },
+        "language": {
+            "title": "Dil Seçimi",
+            "subtitle": "Uygulamayı hangi dilde kullanmak istiyorsunuz?"
+        },
+        "userType": {
+            "title": "Sizi Tanıyalım",
+            "subtitle": "Bu uygulamayı kim kullanacak?",
+            "adult": "Kendim",
+            "adultDesc": "Yetişkin olarak kendim için",
+            "child": "Çocuğum",
+            "childDesc": "Çocuğum için kullanacağım",
+            "family": "Ailemiz",
+            "familyDesc": "Aile olarak birlikte"
+        },
+        "segments": {
+            "title": "Hedefiniz Ne?",
+            "subtitle": "Geliştirmek istediğiniz alanları seçin",
+            "fluency": {
+                "name": "Akıcı Konuşma",
+                "description": "Konuşma temposu ve ritmi"
+            },
+            "diction": {
+                "name": "Diksiyon ve Sunum",
+                "description": "Artikülasyon ve hitabet"
+            },
+            "speedReading": {
+                "name": "Hızlı Okuma",
+                "description": "Okuma hızı artırma"
+            },
+            "comprehension": {
+                "name": "Okuduğunu Anlama",
+                "description": "Kavrama ve hafıza"
+            },
+            "turkishLearning": {
+                "name": "Türkçe Öğrenme",
+                "description": "Telaffuz ve kelime"
+            },
+            "childDevelopment": {
+                "name": "Çocuk Gelişimi",
+                "description": "Dil ve konuşma gelişimi"
+            }
+        },
+        "complete": {
+            "title": "Profiliniz Hazır!",
+            "subtitle": "Size özel plan oluşturduk",
+            "letsStart": "Hadi Başlayalım!"
+        }
+    },
+    "segment": {
+        "fluency": {
+            "name": "Akıcı Konuşma",
+            "description": "Konuşma temposu ve ritmi geliştirme"
+        },
+        "diction": {
+            "name": "Diksiyon ve Sunum",
+            "description": "Artikülasyon, tonlama ve hitabet"
+        },
+        "speedReading": {
+            "name": "Hızlı Okuma",
+            "description": "Okuma hızı ve verimliliği"
+        },
+        "comprehension": {
+            "name": "Okuduğunu Anlama",
+            "description": "Kavrama gücü ve hafıza"
+        },
+        "turkishLearning": {
+            "name": "Türkçe Öğrenme",
+            "description": "Telaffuz ve kelime bilgisi"
+        },
+        "childDevelopment": {
+            "name": "Çocuk Gelişimi",
+            "description": "Dil ve konuşma gelişimi"
+        }
+    },
+    "errors": {
+        "generic": "Bir hata oluştu. Lütfen tekrar deneyin.",
+        "network": "İnternet bağlantınızı kontrol edin.",
+        "unauthorized": "Oturum süreniz doldu."
+    }
+}

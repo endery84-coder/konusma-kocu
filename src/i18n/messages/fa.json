@@ -1,0 +1,34 @@
+{
+    "common": {
+        "appName": "KonuşKoç",
+        "loading": "در حال بارگذاری...",
+        "save": "ذخیره",
+        "cancel": "انصراف",
+        "next": "بعدی",
+        "back": "بازگشت",
+        "start": "شروع",
+        "continue": "ادامه",
+        "free": "رایگان",
+        "premium": "ویژه"
+    },
+    "auth": {
+        "signIn": "ورود",
+        "signUp": "ثبت نام",
+        "signOut": "خروج"
+    },
+    "navigation": {
+        "home": "خانه",
+        "exercises": "تمرین‌ها",
+        "record": "ضبط",
+        "progress": "پیشرفت",
+        "profile": "پروفایل"
+    },
+    "settings": {
+        "title": "تنظیمات",
+        "language": {
+            "title": "زبان",
+            "interface": "زبان رابط"
+        },
+        "signOut": "خروج"
+    }
+}

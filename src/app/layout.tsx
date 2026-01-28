@@ -1,21 +1,70 @@
-import { ThemeProvider } from '@/lib/theme-provider';
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { Toaster } from "@/components/ui/sonner"
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "@/lib/theme-provider";
+import { Toaster } from "sonner";
+import MobileContainer from "@/components/MobileContainer";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
+import OfflineBanner from "@/components/OfflineBanner";
 
-const inter = Inter({ subsets: ["latin", "latin-ext"] })
+const inter = Inter({
+  subsets: ["latin"],
+  display: 'swap',
+});
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+  title: "KonuşKoç - Konuşma ve Okuma Koçunuz",
+  description: "Konuşma akıcılığı, diksiyon, hızlı okuma ve daha fazlası için kişisel koçunuz",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "KonuşKoç",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#0f172a",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="tr" suppressHydrationWarning>
-      <head />
-      <body className={`${inter.className} min-h-screen bg-background font-sans antialiased`}>
-        <ThemeProvider>
-          <main className="mx-auto max-w-md min-h-screen bg-background shadow-2xl relative overflow-hidden transition-colors duration-300">
-            {children}
-          </main>
-          <Toaster />
-        </ThemeProvider>
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+      </head>
+      <body className={`${inter.className} bg-slate-950`}>
+        <LanguageProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <MobileContainer>
+              {children}
+            </MobileContainer>
+            <OfflineBanner />
+            <Toaster
+              position="top-center"
+              richColors
+              closeButton
+            />
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,487 +1,247 @@
 "use client";
 
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, Check, Sparkles } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserPreferences } from '@/hooks/useUserPreferences';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, Check, Wind, BookOpen, Mic, MessageSquare, Baby, Brain, Trophy, Coffee, Zap, Flame, Rocket, ArrowLeft, Sparkles } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { Goal, Challenge, challengesByGoal } from '@/types/onboarding';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-// Hedef seçenekleri
-const goals = [
-    { id: 'fluency', label: 'Daha akıcı konuşmak', icon: '🗣️', description: 'Takılmadan, rahat konuşmak istiyorum' },
-    { id: 'public_speaking', label: 'Topluluk önünde rahat konuşmak', icon: '🎤', description: 'Sunumlarda ve toplantılarda özgüvenli olmak' },
-    { id: 'reading', label: 'Okuma becerimi geliştirmek', icon: '📖', description: 'Daha hızlı ve anlayarak okumak' },
-    { id: 'turkish_learning', label: 'Türkçe öğreniyorum', icon: '🇹🇷', description: 'Türkçe telaffuz ve konuşma pratiği' },
-    { id: 'child', label: 'Çocuğum için kullanacağım', icon: '👶', description: 'Çocuğumun dil gelişimini desteklemek' },
-    { id: 'communication', label: 'Genel iletişimimi güçlendirmek', icon: '✨', description: 'Daha etkili iletişim kurmak' },
-];
-
-export default function OnboardingPage() {
+export default function Onboarding() {
     const router = useRouter();
-    const { savePreferences } = useUserPreferences();
-    const [step, setStep] = useState(1);
-    const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
-    const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
-    const [dailyGoal, setDailyGoal] = useState(15);
-    const [experienceLevel, setExperienceLevel] = useState('beginner');
+    const { t } = useLanguage();
+    const [step, setStep] = useState(0);
+    const [direction, setDirection] = useState(0);
+    const [selection, setSelection] = useState<any>({});
 
-    // Seçilen hedeflere göre zorlukları dinamik olarak hesapla
-    const relevantChallenges = useMemo(() => {
-        if (selectedGoals.length === 0) return [];
+    // State definitions aligned with translations
+    const [steps, setSteps] = useState<any[]>([
+        {}, // Welcome placeholder
+        {}, // Goals placeholder
+        {}, // Level placeholder
+        {}  // Time placeholder
+    ]);
 
-        const challenges: Challenge[] = [];
-        const addedIds = new Set<string>();
+    // Update steps when language changes
+    useEffect(() => {
+        setSteps([
+            {}, // Welcome step handled in render
+            {
+                title: t('onboarding.goalsTitle'),
+                desc: t('onboarding.goalsDesc'),
+                options: [
+                    { id: 'fluency', label: t('onboarding.goals.fluency'), icon: Wind },
+                    { id: 'reading', label: t('onboarding.goals.reading'), icon: BookOpen },
+                    { id: 'diction', label: t('onboarding.goals.diction'), icon: Mic },
+                    { id: 'learning', label: t('onboarding.goals.learning'), icon: MessageSquare },
+                ]
+            },
+            {
+                title: t('onboarding.levelTitle'),
+                desc: t('onboarding.levelDesc'),
+                options: [
+                    { id: 'beginner', label: t('onboarding.levels.beginner'), desc: t('onboarding.levels.beginnerDesc'), icon: Baby },
+                    { id: 'intermediate', label: t('onboarding.levels.intermediate'), desc: t('onboarding.levels.intermediateDesc'), icon: Brain },
+                    { id: 'advanced', label: t('onboarding.levels.advanced'), desc: t('onboarding.levels.advancedDesc'), icon: Trophy },
+                ]
+            },
+            {
+                title: t('onboarding.timeTitle'),
+                desc: t('onboarding.timeDesc'),
+                options: [
+                    { id: '5', label: '5 dk', desc: t('onboarding.types.relaxed'), icon: Coffee },
+                    { id: '10', label: '10 dk', desc: t('onboarding.types.normal'), icon: Zap },
+                    { id: '20', label: '20 dk', desc: t('onboarding.types.serious'), icon: Flame },
+                    { id: '30', label: '30+ dk', desc: t('onboarding.types.intense'), icon: Rocket },
+                ]
+            }
+        ]);
+    }, [t]);
 
-        selectedGoals.forEach(goalId => {
-            const goalChallenges = challengesByGoal[goalId as Goal] || [];
-            goalChallenges.forEach(challenge => {
-                if (!addedIds.has(challenge.id)) {
-                    challenges.push(challenge);
-                    addedIds.add(challenge.id);
+    const handleNext = () => {
+        setDirection(1);
+        setStep(s => s + 1);
+    };
+
+    const handleBack = () => {
+        setDirection(-1);
+        setStep(s => s - 1);
+    };
+
+    const finishOnboarding = async () => {
+        setDirection(1);
+        setStep(4); // Processing step
+
+        // Simulate API call
+        setTimeout(async () => {
+            try {
+                // Save preferences
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    await supabase.from('user_preferences').upsert({
+                        user_id: user.id,
+                        goals: [selection[1]], // Simplification
+                        level: selection[2],
+                        daily_goal_minutes: parseInt(selection[3])
+                    });
                 }
-            });
-        });
-
-        return challenges;
-    }, [selectedGoals]);
-
-    // Adım 3 başlığını dinamik yap
-    const getChallengesTitle = () => {
-        if (selectedGoals.length === 1) {
-            const goal = goals.find(g => g.id === selectedGoals[0]);
-            return `${goal?.icon} ${goal?.label} konusunda...`;
-        }
-        return 'Seçtiğin alanlarda...';
+            } catch (e) {
+                console.error(e);
+            }
+            router.push('/');
+        }, 3000);
     };
 
-    // Adım 3 alt başlığını dinamik yap
-    const getChallengesSubtitle = () => {
-        return 'Aşağıdakilerden hangilerini yaşıyorsun? (İstersen atlayabilirsin)';
+    const variants = {
+        enter: (direction: number) => ({
+            x: direction > 0 ? 50 : -50,
+            opacity: 0
+        }),
+        center: {
+            x: 0,
+            opacity: 1
+        },
+        exit: (direction: number) => ({
+            x: direction < 0 ? 50 : -50,
+            opacity: 0
+        })
     };
 
-    const handleComplete = async () => {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (user) {
-            await savePreferences({
-                goals: selectedGoals,
-                challenges: selectedChallenges,
-                daily_goal_minutes: dailyGoal,
-                experience_level: experienceLevel,
-                onboarding_completed: true,
-                onboarding_completed_at: new Date().toISOString()
-            })
-        }
-        router.push('/')
-    }
-
-    // Step content render
-    const renderStepContent = () => {
+    const renderStep = () => {
         switch (step) {
-            case 1:
+            case 0:
                 return (
-                    <motion.div
-                        key="step1"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        className="space-y-6"
-                    >
-                        <div className="text-center">
-                            <motion.div
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ type: "spring", delay: 0.2 }}
-                                className="w-20 h-20 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-3xl flex items-center justify-center mx-auto mb-6"
-                            >
-                                <span className="text-4xl">👋</span>
-                            </motion.div>
-                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                                KonuşKoç'a Hoş Geldin!
+                    <div className="flex flex-col items-center text-center space-y-8 pt-12">
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-teal-400 to-cyan-400 flex items-center justify-center shadow-lg shadow-teal-500/30"
+                        >
+                            <Zap className="w-12 h-12 text-white" />
+                        </motion.div>
+                        <div className="space-y-4">
+                            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-cyan-400 whitespace-pre-line">
+                                {t('onboarding.welcomeTitle')}
                             </h1>
-                            <p className="text-gray-500 dark:text-gray-400 mt-2">
-                                Sana en uygun deneyimi sunmak için birkaç soru soracağız.
+                            <p className="text-muted-foreground text-lg px-6 leading-relaxed">
+                                {t('onboarding.welcomeDesc')}
                             </p>
                         </div>
-                    </motion.div>
+                        <div className="absolute bottom-8 w-full px-6">
+                            <button onClick={handleNext} className="btn-primary w-full py-4 text-lg rounded-2xl shadow-xl shadow-teal-500/20">
+                                {t('common.start')} <ChevronRight className="w-5 h-5 ml-1 inline rtl-flip" />
+                            </button>
+                        </div>
+                    </div>
                 );
 
-            case 2:
+            case 4: // Processing
                 return (
-                    <motion.div
-                        key="step2"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        className="space-y-4"
-                    >
-                        <div className="text-center mb-6">
-                            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                                Hangi alanda kendini geliştirmek istiyorsun?
-                            </h2>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                                Birden fazla seçebilirsin
-                            </p>
+                    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8">
+                        <div className="relative w-32 h-32">
+                            <div className="absolute inset-0 rounded-full border-4 border-teal-500/20 animate-ping" />
+                            <div className="absolute inset-0 rounded-full border-4 border-t-teal-500 animate-spin" />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <Sparkles className="w-12 h-12 text-teal-500 animate-pulse" />
+                            </div>
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-foreground mb-2">{t('onboarding.processingTitle')}</h2>
+                            <p className="text-muted-foreground">{t('onboarding.processingDesc')}</p>
+                        </div>
+                    </div>
+                );
+
+            default:
+                const currentData = steps[step];
+                if (!currentData || !currentData.options) return null; // Guard
+
+                return (
+                    <div className="space-y-6 pt-4">
+                        <div className="space-y-2">
+                            <h2 className="text-2xl font-bold text-foreground">{currentData.title}</h2>
+                            <p className="text-muted-foreground">{currentData.desc}</p>
                         </div>
 
                         <div className="grid gap-3">
-                            {goals.map((goal, index) => (
+                            {currentData.options.map((option: any, index: number) => (
                                 <motion.button
-                                    key={goal.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.05 }}
-                                    onClick={() => {
-                                        setSelectedGoals(prev =>
-                                            prev.includes(goal.id)
-                                                ? prev.filter(g => g !== goal.id)
-                                                : [...prev, goal.id]
-                                        );
-                                    }}
+                                    key={option.id}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    onClick={() => setSelection({ ...selection, [step]: option.id })}
                                     className={`
-                    relative p-4 rounded-2xl border-2 text-left transition-all duration-200
-                    ${selectedGoals.includes(goal.id)
-                                            ? 'border-primary bg-primary/5 dark:bg-primary/10'
-                                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-                                        }
+                    flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all
+                    ${selection[step] === option.id
+                                            ? 'border-teal-500 bg-teal-500/10'
+                                            : 'border-white/10 bg-white/5 hover:bg-white/10'}
                   `}
                                 >
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-3xl">{goal.icon}</span>
-                                        <div className="flex-1">
-                                            <p className="font-semibold text-gray-900 dark:text-white">
-                                                {goal.label}
-                                            </p>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                {goal.description}
-                                            </p>
-                                        </div>
-                                        {selectedGoals.includes(goal.id) && (
-                                            <motion.div
-                                                initial={{ scale: 0 }}
-                                                animate={{ scale: 1 }}
-                                                className="w-6 h-6 bg-primary rounded-full flex items-center justify-center"
-                                            >
-                                                <Check className="w-4 h-4 text-white" />
-                                            </motion.div>
+                                    <div className={`p-3 rounded-xl ${selection[step] === option.id ? 'bg-teal-500 text-white' : 'bg-white/10 text-muted-foreground'}`}>
+                                        <option.icon className="w-6 h-6" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className={`font-semibold ${selection[step] === option.id ? 'text-teal-500' : 'text-foreground'}`}>
+                                            {option.label}
+                                        </p>
+                                        {option.desc && (
+                                            <p className="text-sm text-muted-foreground">{option.desc}</p>
                                         )}
                                     </div>
+                                    {selection[step] === option.id && (
+                                        <div className="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center">
+                                            <Check className="w-4 h-4 text-white" />
+                                        </div>
+                                    )}
                                 </motion.button>
                             ))}
                         </div>
-                    </motion.div>
-                );
 
-            case 3:
-                return (
-                    <motion.div
-                        key="step3"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        className="space-y-4"
-                    >
-                        <div className="text-center mb-6">
-                            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                                {getChallengesTitle()}
-                            </h2>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                                {getChallengesSubtitle()}
-                            </p>
+                        <div className="absolute bottom-8 w-full left-0 px-6 flex gap-4">
+                            <button
+                                onClick={handleBack}
+                                className="px-6 py-4 rounded-2xl bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+                            >
+                                <ArrowLeft className="w-6 h-6 rtl-flip" />
+                            </button>
+                            <button
+                                onClick={step === steps.length - 1 ? finishOnboarding : handleNext}
+                                disabled={!selection[step]}
+                                className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-teal-400 to-cyan-400 text-white font-bold shadow-lg shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {step === steps.length - 1 ? t('common.finish') : t('common.continue')}
+                            </button>
                         </div>
-
-                        {relevantChallenges.length > 0 ? (
-                            <div className="grid gap-2 max-h-[400px] overflow-y-auto pr-2">
-                                {relevantChallenges.map((challenge, index) => (
-                                    <motion.button
-                                        key={challenge.id}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: index * 0.03 }}
-                                        onClick={() => {
-                                            setSelectedChallenges(prev =>
-                                                prev.includes(challenge.id)
-                                                    ? prev.filter(c => c !== challenge.id)
-                                                    : [...prev, challenge.id]
-                                            );
-                                        }}
-                                        className={`
-                      p-3 rounded-xl border-2 text-left transition-all duration-200
-                      ${selectedChallenges.includes(challenge.id)
-                                                ? 'border-primary bg-primary/5 dark:bg-primary/10'
-                                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
-                                            }
-                    `}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-xl">{challenge.icon}</span>
-                                            <span className="flex-1 text-gray-900 dark:text-white">
-                                                {challenge.label}
-                                            </span>
-                                            {selectedChallenges.includes(challenge.id) && (
-                                                <motion.div
-                                                    initial={{ scale: 0 }}
-                                                    animate={{ scale: 1 }}
-                                                    className="w-5 h-5 bg-primary rounded-full flex items-center justify-center"
-                                                >
-                                                    <Check className="w-3 h-3 text-white" />
-                                                </motion.div>
-                                            )}
-                                        </div>
-                                    </motion.button>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-center text-gray-500 py-8">
-                                Önce hedeflerini seç
-                            </p>
-                        )}
-
-                        {/* "Bunların hiçbiri" seçeneği */}
-                        <motion.button
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                            onClick={() => setSelectedChallenges(['none'])}
-                            className={`
-                w-full p-3 rounded-xl border-2 text-center transition-all
-                ${selectedChallenges.includes('none')
-                                    ? 'border-gray-400 bg-gray-100 dark:bg-gray-800'
-                                    : 'border-gray-200 dark:border-gray-700'
-                                }
-              `}
-                        >
-                            <span className="text-gray-600 dark:text-gray-400">
-                                Bunların hiçbiri / Söylemek istemiyorum
-                            </span>
-                        </motion.button>
-                    </motion.div>
-                );
-
-            case 4:
-                return (
-                    <motion.div
-                        key="step4"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        className="space-y-8"
-                    >
-                        {/* Günlük süre */}
-                        <div>
-                            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-                                Günde ne kadar zaman ayırabilirsin?
-                            </h3>
-                            <div className="grid gap-3">
-                                {[
-                                    { value: 5, label: '5 dakika', icon: '⚡', desc: 'Hızlı pratik' },
-                                    { value: 15, label: '10-15 dakika', icon: '⏱️', desc: 'Önerilen' },
-                                    { value: 30, label: '20-30 dakika', icon: '🎯', desc: 'Yoğun program' },
-                                ].map((option) => (
-                                    <button
-                                        key={option.value}
-                                        onClick={() => setDailyGoal(option.value)}
-                                        className={`
-                      p-4 rounded-xl border-2 text-left transition-all
-                      ${dailyGoal === option.value
-                                                ? 'border-primary bg-primary/5'
-                                                : 'border-gray-200 dark:border-gray-700'
-                                            }
-                    `}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-2xl">{option.icon}</span>
-                                            <div>
-                                                <p className="font-medium text-gray-900 dark:text-white">{option.label}</p>
-                                                <p className="text-sm text-gray-500">{option.desc}</p>
-                                            </div>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Deneyim seviyesi */}
-                        <div>
-                            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-                                Daha önce konuşma egzersizi yaptın mı?
-                            </h3>
-                            <div className="grid gap-3">
-                                {[
-                                    { value: 'beginner', label: 'Hayır, yeni başlıyorum', icon: '🌱' },
-                                    { value: 'intermediate', label: 'Biraz deneyimim var', icon: '📚' },
-                                    { value: 'advanced', label: 'Evet, düzenli yapıyorum', icon: '💪' },
-                                ].map((option) => (
-                                    <button
-                                        key={option.value}
-                                        onClick={() => setExperienceLevel(option.value)}
-                                        className={`
-                      p-4 rounded-xl border-2 text-left transition-all
-                      ${experienceLevel === option.value
-                                                ? 'border-primary bg-primary/5'
-                                                : 'border-gray-200 dark:border-gray-700'
-                                            }
-                    `}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-2xl">{option.icon}</span>
-                                            <p className="font-medium text-gray-900 dark:text-white">{option.label}</p>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </motion.div>
-                );
-
-            case 5:
-                return (
-                    <motion.div
-                        key="step5"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="text-center space-y-6"
-                    >
-                        <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ type: "spring", delay: 0.2 }}
-                            className="w-24 h-24 bg-gradient-to-br from-teal-400 to-cyan-600 rounded-full flex items-center justify-center mx-auto"
-                        >
-                            <Sparkles className="w-12 h-12 text-white" />
-                        </motion.div>
-
-                        <div>
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                                Harika! Planın Hazır 🎉
-                            </h2>
-                            <p className="text-gray-500 dark:text-gray-400 mt-2">
-                                Senin için kişiselleştirilmiş bir program oluşturduk
-                            </p>
-                        </div>
-
-                        {/* Özet kartı */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="bg-gradient-to-br from-teal-500/10 to-cyan-500/10 rounded-2xl p-6 text-left"
-                        >
-                            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-                                📋 Senin Planın
-                            </h3>
-                            <ul className="space-y-3">
-                                <li className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                    <span className="text-primary">✓</span>
-                                    Günlük {dailyGoal} dakika pratik
-                                </li>
-                                <li className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                    <span className="text-primary">✓</span>
-                                    {selectedGoals.map(g => goals.find(x => x.id === g)?.icon).join(' ')} odaklı egzersizler
-                                </li>
-                                <li className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                    <span className="text-primary">✓</span>
-                                    {experienceLevel === 'beginner' ? 'Başlangıç' : experienceLevel === 'intermediate' ? 'Orta' : 'İleri'} seviye içerik
-                                </li>
-                                <li className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                    <span className="text-primary">✓</span>
-                                    Haftalık ilerleme takibi
-                                </li>
-                            </ul>
-                        </motion.div>
-                    </motion.div>
+                    </div>
                 );
         }
     };
 
-    // Konfeti efekti (son adımda)
-    const triggerConfetti = () => {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
-    };
-
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
-            {/* Progress bar */}
-            <div className="max-w-md mx-auto mb-8">
-                <div className="flex gap-2">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                        <div
-                            key={s}
-                            className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${s <= step ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'
-                                }`}
-                        />
-                    ))}
-                </div>
-                <p className="text-center text-sm text-gray-500 mt-2">
-                    {step} / 5
-                </p>
+        <div className="min-h-screen bg-background pb-safe px-6 overflow-hidden">
+            {/* Progress Bar */}
+            <div className="fixed top-0 left-0 w-full h-1 bg-secondary pointer-events-none z-50">
+                <motion.div
+                    className="h-full bg-teal-500"
+                    animate={{ width: `${((step + 1) / 5) * 100}%` }}
+                />
             </div>
 
-            {/* Content */}
-            <div className="max-w-md mx-auto">
-                <AnimatePresence mode="wait">
-                    {renderStepContent()}
-                </AnimatePresence>
-            </div>
-
-            {/* Navigation buttons */}
-            <div className="max-w-md mx-auto mt-8 flex gap-3">
-                {step > 1 && (
-                    <button
-                        onClick={() => setStep(step - 1)}
-                        className="flex-1 py-3 px-6 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium"
-                    >
-                        <ChevronLeft className="inline w-5 h-5 mr-1" />
-                        Geri
-                    </button>
-                )}
-
-                <button
-                    onClick={() => {
-                        if (step === 5) {
-                            triggerConfetti();
-                            // Save ve yönlendir
-                            handleComplete();
-                        } else if (step === 3) {
-                            // Zorluk soruları atlanabilir
-                            setStep(step + 1);
-                        } else if (step === 2 && selectedGoals.length === 0) {
-                            // En az bir hedef seçilmeli
-                            return;
-                        } else {
-                            setStep(step + 1);
-                        }
-                    }}
-                    disabled={step === 2 && selectedGoals.length === 0}
-                    className={`
-            flex-1 py-3 px-6 rounded-xl font-medium transition-all
-            ${step === 2 && selectedGoals.length === 0
-                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                            : 'bg-primary text-white hover:bg-primary/90'
-                        }
-          `}
+            <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                    key={step}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.3 }}
+                    className="h-full"
                 >
-                    {step === 5 ? (
-                        <>
-                            Başlayalım!
-                            <Sparkles className="inline w-5 h-5 ml-1" />
-                        </>
-                    ) : step === 3 ? (
-                        selectedChallenges.length > 0 ? 'Devam' : 'Atla'
-                    ) : (
-                        <>
-                            Devam
-                            <ChevronRight className="inline w-5 h-5 ml-1" />
-                        </>
-                    )}
-                </button>
-            </div>
+                    {renderStep()}
+                </motion.div>
+            </AnimatePresence>
         </div>
     );
 }

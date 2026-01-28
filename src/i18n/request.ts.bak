@@ -1,0 +1,26 @@
+import { getRequestConfig } from 'next-intl/server';
+import { cookies } from 'next/headers';
+import { defaultLocale, locales, Locale } from './config';
+
+export default getRequestConfig(async () => {
+    const cookieStore = await cookies();
+    const localeCookie = cookieStore.get('locale')?.value;
+
+    let locale: Locale = defaultLocale;
+
+    if (localeCookie && locales.includes(localeCookie as Locale)) {
+        locale = localeCookie as Locale;
+    }
+
+    let messages;
+    try {
+        messages = (await import(`./messages/${locale}.json`)).default;
+    } catch {
+        messages = (await import(`./messages/tr.json`)).default;
+    }
+
+    return {
+        locale,
+        messages
+    };
+});

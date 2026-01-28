@@ -1,0 +1,34 @@
+{
+    "common": {
+        "appName": "KonuşKoç",
+        "loading": "Загрузка...",
+        "save": "Сохранить",
+        "cancel": "Отмена",
+        "next": "Далее",
+        "back": "Назад",
+        "start": "Начать",
+        "continue": "Продолжить",
+        "free": "Бесплатно",
+        "premium": "Премиум"
+    },
+    "auth": {
+        "signIn": "Войти",
+        "signUp": "Регистрация",
+        "signOut": "Выйти"
+    },
+    "navigation": {
+        "home": "Главная",
+        "exercises": "Упражнения",
+        "record": "Запись",
+        "progress": "Прогресс",
+        "profile": "Профиль"
+    },
+    "settings": {
+        "title": "Настройки",
+        "language": {
+            "title": "Язык",
+            "interface": "Язык интерфейса"
+        },
+        "signOut": "Выйти"
+    }
+}

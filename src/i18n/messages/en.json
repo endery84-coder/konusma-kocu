@@ -1,0 +1,142 @@
+{
+    "common": {
+        "appName": "KonuşKoç",
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "retry": "Retry",
+        "save": "Save",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "delete": "Delete",
+        "edit": "Edit",
+        "close": "Close",
+        "next": "Next",
+        "back": "Back",
+        "skip": "Skip",
+        "done": "Done",
+        "start": "Start",
+        "continue": "Continue",
+        "yes": "Yes",
+        "no": "No",
+        "search": "Search",
+        "all": "All",
+        "free": "Free",
+        "premium": "Premium",
+        "minutes": "minutes",
+        "hours": "hours",
+        "days": "days"
+    },
+    "auth": {
+        "welcome": "Welcome",
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "signOut": "Sign Out",
+        "email": "Email",
+        "password": "Password",
+        "forgotPassword": "Forgot Password"
+    },
+    "navigation": {
+        "home": "Home",
+        "exercises": "Exercises",
+        "record": "Record",
+        "progress": "Progress",
+        "profile": "Profile"
+    },
+    "home": {
+        "greeting": {
+            "morning": "Good morning",
+            "afternoon": "Good afternoon",
+            "evening": "Good evening"
+        },
+        "streak": {
+            "title": "Daily Streak",
+            "days": "{count} days"
+        },
+        "dailyGoal": {
+            "title": "Daily Goal",
+            "progress": "{current} / {target} minutes"
+        },
+        "recommendedExercises": "Recommended for You",
+        "dailyQuote": "Quote of the Day"
+    },
+    "exercises": {
+        "title": "Exercises",
+        "searchPlaceholder": "Search exercises...",
+        "categories": {
+            "all": "All",
+            "breathing": "Breathing",
+            "fluency": "Fluency",
+            "diction": "Diction",
+            "reading": "Reading"
+        },
+        "difficulty": {
+            "beginner": "Beginner",
+            "intermediate": "Intermediate",
+            "advanced": "Advanced"
+        },
+        "start": "Start",
+        "complete": {
+            "title": "Congratulations!",
+            "xpEarned": "+{xp} XP earned"
+        }
+    },
+    "record": {
+        "title": "Voice Recording",
+        "practiceText": "Practice Text",
+        "recording": "Recording...",
+        "tapToRecord": "Tap to start recording",
+        "save": "Save Recording",
+        "tools": {
+            "title": "Tools",
+            "daf": {
+                "name": "DAF Mode",
+                "description": "Delayed auditory feedback"
+            },
+            "metronome": {
+                "name": "Metronome",
+                "description": "Rhythmic speech practice"
+            }
+        }
+    },
+    "progress": {
+        "title": "Progress",
+        "weeklyActivity": "Weekly Activity",
+        "achievements": "Achievements"
+    },
+    "profile": {
+        "title": "Profile",
+        "level": "Level {level}",
+        "subscription": {
+            "free": "Free Plan",
+            "premium": "Premium",
+            "upgrade": "Upgrade to Premium"
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "language": {
+            "title": "Language & Region",
+            "interface": "Interface Language"
+        },
+        "signOut": "Sign Out"
+    },
+    "premium": {
+        "title": "Premium",
+        "subtitle": "Unlock all features",
+        "subscribe": "Subscribe"
+    },
+    "segment": {
+        "fluency": {
+            "name": "Fluent Speaking",
+            "description": "Improve speech tempo and rhythm"
+        },
+        "diction": {
+            "name": "Diction & Presentation",
+            "description": "Articulation and public speaking"
+        },
+        "turkishLearning": {
+            "name": "Learn Turkish",
+            "description": "Pronunciation and vocabulary"
+        }
+    }
+}

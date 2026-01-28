@@ -1,0 +1,34 @@
+{
+    "common": {
+        "appName": "KonuşKoç",
+        "loading": "جاري التحميل...",
+        "save": "حفظ",
+        "cancel": "إلغاء",
+        "next": "التالي",
+        "back": "رجوع",
+        "start": "ابدأ",
+        "continue": "متابعة",
+        "free": "مجاني",
+        "premium": "مميز"
+    },
+    "auth": {
+        "signIn": "تسجيل الدخول",
+        "signUp": "إنشاء حساب",
+        "signOut": "تسجيل الخروج"
+    },
+    "navigation": {
+        "home": "الرئيسية",
+        "exercises": "التمارين",
+        "record": "تسجيل",
+        "progress": "التقدم",
+        "profile": "الملف الشخصي"
+    },
+    "settings": {
+        "title": "الإعدادات",
+        "language": {
+            "title": "اللغة",
+            "interface": "لغة الواجهة"
+        },
+        "signOut": "تسجيل الخروج"
+    }
+}

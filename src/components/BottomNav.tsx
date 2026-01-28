@@ -1,67 +1,69 @@
 "use client";
 
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, BookOpen, BarChart3, User, Mic } from 'lucide-react';
+import { Home, Dumbbell, Mic, TrendingUp, User } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const navItems = [
-    { href: '/', icon: Home, label: 'Ana Sayfa' },
-    { href: '/exercises', icon: BookOpen, label: 'Egzersizler' },
-    { href: '/record', icon: Mic, label: 'Kayıt' },
-    { href: '/progress', icon: BarChart3, label: 'İlerleme' },
-    { href: '/profile', icon: User, label: 'Profil' },
-];
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function BottomNav() {
     const pathname = usePathname();
     const router = useRouter();
+    const { t } = useLanguage();
+
+    const navItems = [
+        { href: '/', icon: Home, label: t('nav.home') },
+        { href: '/exercises', icon: Dumbbell, label: t('nav.exercises') },
+        { href: '/record', icon: Mic, label: t('nav.record'), isMain: true },
+        { href: '/progress', icon: TrendingUp, label: t('nav.progress') },
+        { href: '/profile', icon: User, label: t('nav.profile') },
+    ];
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-50">
-            {/* Blur Background */}
-            <div className="absolute inset-0 bg-card/80 backdrop-blur-xl border-t border-border" />
+        <nav className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+            <div className="max-w-[430px] mx-auto pointer-events-auto">
+                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-white/20 dark:border-white/5 pb-safe">
+                    <div className="flex justify-around items-center h-16 relative">
+                        {navItems.map((item) => {
+                            const isActive = pathname === item.href;
 
-            <div className="relative flex items-center justify-around h-16 max-w-lg mx-auto px-2">
-                {navItems.map((item) => {
-                    const isActive = pathname === item.href ||
-                        (item.href !== '/' && pathname?.startsWith(item.href));
+                            if (item.isMain) {
+                                return (
+                                    <motion.button
+                                        key={item.href}
+                                        whileTap={{ scale: 0.9 }}
+                                        onClick={() => router.push(item.href)}
+                                        className="relative -top-6 bg-gradient-to-tr from-teal-400 to-cyan-400 p-4 rounded-full shadow-lg border-4 border-white dark:border-slate-950 flex flex-col items-center justify-center gap-1 group"
+                                    >
+                                        <item.icon className="w-6 h-6 text-white" />
+                                        <span className="text-[10px] font-medium text-white/90 absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            {item.label}
+                                        </span>
+                                    </motion.button>
+                                );
+                            }
 
-                    return (
-                        <button
-                            key={item.href}
-                            onClick={() => router.push(item.href)}
-                            className="relative flex flex-col items-center justify-center w-16 h-full group"
-                        >
-                            {isActive && (
-                                <motion.div
-                                    layoutId="activeNavBg"
-                                    className="absolute inset-1 bg-primary/10 rounded-2xl"
-                                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                                />
-                            )}
-
-                            <motion.div
-                                whileTap={{ scale: 0.9 }}
-                                className="relative z-10 flex flex-col items-center"
-                            >
-                                <item.icon
-                                    className={`w-5 h-5 transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
-                                        }`}
-                                />
-                                <span
-                                    className={`text-[10px] mt-1 font-medium transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
-                                        }`}
+                            return (
+                                <button
+                                    key={item.href}
+                                    onClick={() => router.push(item.href)}
+                                    className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-colors relative
+                    ${isActive ? 'text-teal-500' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}
+                  `}
                                 >
-                                    {item.label}
-                                </span>
-                            </motion.div>
-                        </button>
-                    );
-                })}
+                                    <item.icon className={`w-5 h-5 ${isActive ? 'fill-current' : ''}`} />
+                                    <span className="text-[10px] font-medium">{item.label}</span>
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="activeTab"
+                                            className="absolute -bottom-2 w-1 h-1 bg-teal-500 rounded-full"
+                                        />
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
-
-            {/* Safe Area Spacer */}
-            <div className="h-safe-area-inset-bottom bg-card/80" />
         </nav>
     );
 }

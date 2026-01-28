@@ -1,145 +1,249 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
-import { Calendar } from "@/components/ui/calendar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { useProgress } from "@/hooks/useProgress"
-import { supabase } from "@/lib/supabase"
-import BottomNav from "@/components/BottomNav"
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import {
+    User, Settings, Award, TrendingUp, Calendar,
+    BarChart2, Clock, MapPin, Edit3, LogOut, ChevronRight, Target
+} from 'lucide-react';
+import {
+    BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+    RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
+} from 'recharts';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { supabase } from '@/lib/supabase';
+import { badges } from '@/lib/data/badges';
+import BottomNav from '@/components/BottomNav';
 
-export default function ProgressPage() {
-    const router = useRouter()
-    const [userId, setUserId] = useState<string>("")
+export default function ProfilePage() {
+    const router = useRouter();
+    const { t } = useLanguage();
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    // Mock Data for Charts (Later connected to DB)
+    const weeklyData = [
+        { name: 'Pzt', min: 12 },
+        { name: 'Sal', min: 25 },
+        { name: 'Çar', min: 18 },
+        { name: 'Per', min: 30 },
+        { name: 'Cum', min: 15 },
+        { name: 'Cmt', min: 45 },
+        { name: 'Paz', min: 20 },
+    ];
+
+    const skillData = [
+        { subject: 'Nefes', A: 80, fullMark: 100 },
+        { subject: 'Diksiyon', A: 65, fullMark: 100 },
+        { subject: 'Hız', A: 90, fullMark: 100 },
+        { subject: 'Vurgu', A: 70, fullMark: 100 },
+        { subject: 'Kelime', A: 50, fullMark: 100 },
+    ];
 
     useEffect(() => {
-        supabase.auth.getUser().then(({ data }) => {
-            if (data.user) setUserId(data.user.id)
-            else router.push('/auth')
-        })
-    }, [])
+        const fetchProfile = async () => {
+            try {
+                const { data: { user: authUser } } = await supabase.auth.getUser();
+                if (!authUser) {
+                    router.push('/welcome');
+                    return;
+                }
 
-    const { progress, loading } = useProgress(userId)
+                const { data: profile } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('id', authUser.id)
+                    .single();
 
-    // Calendar for Monthly View (just visualization for now)
-    const [date, setDate] = useState<Date | undefined>(new Date())
+                setUser({
+                    ...profile,
+                    firstName: profile?.full_name?.split(' ')[0] || 'Kullanıcı',
+                    joinDate: new Date(profile?.created_at || Date.now()).toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' })
+                });
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProfile();
+    }, [router]);
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        router.push('/welcome');
+    };
+
+    if (loading) return null;
 
     return (
-        <div className="min-h-screen bg-background pb-safe p-6">
-            <h1 className="text-2xl font-bold">İlerleme</h1>
-
-            {/* Summary Cards */}
-            <div className="grid grid-cols-3 gap-3 my-6">
-                <Card className="bg-orange-500/10 border-none shadow-none">
-                    <CardContent className="p-4 flex flex-col items-center justify-center text-center">
-                        <span className="text-xl">🔥</span>
-                        <span className="text-lg font-bold text-orange-600">{progress.streakDays}</span>
-                        <span className="text-xs text-orange-600/60 font-medium">Gün Seri</span>
-                    </CardContent>
-                </Card>
-                <Card className="bg-blue-500/10 border-none shadow-none">
-                    <CardContent className="p-4 flex flex-col items-center justify-center text-center">
-                        <span className="text-xl">⏱️</span>
-                        <span className="text-lg font-bold text-blue-600">{progress.weeklyMinutes}</span>
-                        <span className="text-xs text-blue-600/60 font-medium">Bu Hafta</span>
-                    </CardContent>
-                </Card>
-                <Card className="bg-emerald-500/10 border-none shadow-none">
-                    <CardContent className="p-4 flex flex-col items-center justify-center text-center">
-                        <span className="text-xl">🎯</span>
-                        <span className="text-lg font-bold text-emerald-600">{progress.completedExercises}</span>
-                        <span className="text-xs text-emerald-600/60 font-medium">Tamamlanan</span>
-                    </CardContent>
-                </Card>
+        <div className="min-h-screen bg-background pb-24">
+            {/* Header */}
+            <div className="w-full px-6 py-8 flex justify-between items-start bg-card border-b border-border">
+                <div className="flex items-center gap-4">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-3xl font-bold text-primary-foreground shadow-lg">
+                        {user?.full_name?.[0] || 'U'}
+                    </div>
+                    <div>
+                        <h1 className="text-2xl font-bold text-foreground">{user?.full_name || 'Kullanıcı'}</h1>
+                        <p className="text-muted-foreground flex items-center gap-1 text-sm">
+                            <Calendar className="w-3 h-3" /> {t('profile.joined')} {user?.joinDate}
+                        </p>
+                    </div>
+                </div>
+                <button
+                    onClick={() => router.push('/settings')}
+                    className="p-2 bg-secondary rounded-xl hover:bg-secondary/80 transition-colors"
+                >
+                    <Settings className="w-5 h-5 text-foreground" />
+                </button>
             </div>
 
-            {/* Weekly Chart */}
-            <Card className="glass-card shadow-soft border-none mb-6">
-                <CardHeader>
-                    <CardTitle className="text-base text-foreground font-semibold">Haftalık Aktivite</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="h-[200px] w-full">
+            <div className="p-6 space-y-6">
+                {/* Main Stats Grid */}
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-card p-4 rounded-2xl border border-border flex flex-col items-center justify-center gap-2">
+                        <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                            <Flame className="w-5 h-5 text-orange-500" />
+                        </div>
+                        <span className="text-2xl font-black text-foreground">{user?.streak_days || 0}</span>
+                        <span className="text-xs text-muted-foreground uppercase">{t('progress.streak')}</span>
+                    </div>
+                    <div className="bg-card p-4 rounded-2xl border border-border flex flex-col items-center justify-center gap-2">
+                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                            <Award className="w-5 h-5 text-blue-500" />
+                        </div>
+                        <span className="text-2xl font-black text-foreground">{user?.total_xp || 0}</span>
+                        <span className="text-xs text-muted-foreground uppercase">XP</span>
+                    </div>
+                </div>
+
+                {/* Analysis Charts */}
+                <div className="bg-card p-5 rounded-3xl border border-border shadow-sm">
+                    <div className="flex items-center gap-2 mb-4">
+                        <BarChart2 className="w-5 h-5 text-primary" />
+                        <h3 className="font-bold text-foreground">Haftalık Aktivite</h3>
+                    </div>
+                    <div className="h-48 w-full">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={progress.weeklyData}>
-                                <XAxis dataKey="day" fontSize={12} tickLine={false} axisLine={false} tick={{ fill: 'var(--muted-foreground)' }} />
-                                <YAxis hide />
+                            <BarChart data={weeklyData}>
+                                <XAxis dataKey="name" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
                                 <Tooltip
-                                    contentStyle={{ borderRadius: '12px', border: 'none', background: 'var(--popover)', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
-                                    cursor={{ fill: 'var(--muted)' }}
+                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                                    cursor={{ fill: 'rgba(0,0,0,0.05)' }}
                                 />
-                                <Bar dataKey="minutes" fill="url(#gradient-bar)" radius={[6, 6, 6, 6]} barSize={16} />
-                                <defs>
-                                    <linearGradient id="gradient-bar" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="rgb(124 58 237)" />
-                                        <stop offset="100%" stopColor="rgb(236 72 153)" />
-                                    </linearGradient>
-                                </defs>
+                                <Bar dataKey="min" fill="currentColor" className="text-primary" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
 
-            {/* Monthly Calendar View */}
-            <Card className="glass-card shadow-soft border-none mb-6">
-                <CardHeader>
-                    <CardTitle className="text-base text-foreground font-semibold">Aylık Takvim</CardTitle>
-                </CardHeader>
-                <CardContent className="flex justify-center">
-                    <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        className="rounded-xl border border-border"
-                    />
-                </CardContent>
-            </Card>
+                <div className="bg-card p-5 rounded-3xl border border-border shadow-sm">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Target className="w-5 h-5 text-accent" />
+                        <h3 className="font-bold text-foreground">Yetenek Haritası</h3>
+                    </div>
+                    <div className="h-56 w-full -ml-4">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillData}>
+                                <PolarGrid strokeOpacity={0.2} />
+                                <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: '#888' }} />
+                                <Radar
+                                    name="Skills"
+                                    dataKey="A"
+                                    stroke="currentColor"
+                                    className="text-primary"
+                                    fill="currentColor"
+                                    fillOpacity={0.4}
+                                />
+                            </RadarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
 
-            {/* Recent Activities */}
-            <div className="space-y-3">
-                <h3 className="font-semibold">Son Aktiviteler</h3>
-                {progress.recentActivities.length > 0 ? (
-                    progress.recentActivities.map((activity: any, i) => (
-                        <div key={i} className="flex items-center justify-between p-3 bg-card rounded-xl border shadow-sm">
-                            <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                    {activity.exercises?.icon || '📝'}
-                                </div>
-                                <div>
-                                    <div className="font-medium text-sm">{activity.exercises?.title || 'Egzersiz'}</div>
-                                    <div className="text-xs text-muted-foreground">
-                                        {new Date(activity.completed_at).toLocaleDateString('tr-TR')}
+                {/* Badges Section */}
+                <div className="bg-card p-5 rounded-3xl border border-border shadow-sm">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Award className="w-5 h-5 text-yellow-500" />
+                        <h3 className="font-bold text-foreground">Rozetlerim</h3>
+                    </div>
+                    <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                        {badges.map((badge) => {
+                            // Mock Logic for Unlocking
+                            let isUnlocked = false;
+                            if (badge.id === 'start' && (user?.total_xp || 0) > 0) isUnlocked = true;
+                            if (badge.id === 'week_streak' && (user?.streak_days || 0) >= 7) isUnlocked = true;
+                            if (badge.id === 'master' && (user?.total_xp || 0) >= 1000) isUnlocked = true;
+
+                            // For demo purposes, unlock 'start' always if user exists
+                            if (badge.id === 'start') isUnlocked = true;
+
+                            return (
+                                <div key={badge.id} className="flex flex-col items-center gap-1 group relative">
+                                    <div className={`
+                                        w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all
+                                        ${isUnlocked ? badge.color + ' shadow-md' : 'bg-secondary/50 grayscale opacity-50'}
+                                    `}>
+                                        {badge.icon}
+                                    </div>
+                                    <span className="text-[10px] text-center font-medium leading-tight line-clamp-2 max-w-[60px]">
+                                        {t(`profile.badges.${badge.key}.name` as any)}
+                                    </span>
+
+                                    {/* Tooltip */}
+                                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-popover text-popover-foreground text-xs px-2 py-1 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10 border border-border">
+                                        {t(`profile.badges.${badge.key}.desc` as any)}
                                     </div>
                                 </div>
-                            </div>
-                            <div className="text-sm font-semibold text-primary">
-                                {Math.round(activity.duration_seconds / 60)} dk
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <div className="text-center p-4 text-muted-foreground text-sm">Henüz aktivite yok.</div>
-                )}
-            </div>
+                            );
+                        })}
+                    </div>
+                </div>
 
-            {/* Achievements Grid */}
-            <div className="space-y-3">
-                <h3 className="font-semibold">Başarılar</h3>
-                <div className="grid grid-cols-4 gap-2">
-                    {progress.achievements.map((a: any) => (
-                        <div key={a.id} className="flex flex-col items-center">
-                            <div className="h-14 w-14 rounded-full bg-yellow-100 flex items-center justify-center text-2xl border-2 border-yellow-200">
-                                {a.achievements?.icon}
+                {/* Edit & Logout */}
+                <div className="space-y-3">
+                    <button className="w-full flex items-center justify-between p-4 bg-secondary/30 rounded-2xl hover:bg-secondary/50 transition-colors group">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                                <Edit3 className="w-5 h-5 text-purple-600" />
                             </div>
+                            <span className="font-medium text-foreground">{t('profile.edit')}</span>
                         </div>
-                    ))}
-                    {/* Placeholders for locked achievements if needed */}
+                        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                    </button>
+
+                    <button onClick={handleLogout} className="w-full flex items-center justify-between p-4 bg-red-50 rounded-2xl hover:bg-red-100 transition-colors group">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
+                                <LogOut className="w-5 h-5 text-red-600" />
+                            </div>
+                            <span className="font-medium text-red-600">{t('settings.items.logout')}</span>
+                        </div>
+                    </button>
                 </div>
             </div>
+
             <BottomNav />
         </div>
+    );
+}
+
+function Flame(props: any) {
+    return (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0 1.1.2 2.2.5 3.3a9 9 0 0 0 2-7.8Z" />
+        </svg>
     )
 }

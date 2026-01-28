@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -11,10 +11,13 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from '@/lib/theme-provider';
 import { supabase } from '@/lib/supabase';
 import BottomNav from '@/components/BottomNav';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function SettingsPage() {
     const router = useRouter();
     const { theme, toggleTheme } = useTheme();
+    const { t, language } = useLanguage();
+
     const [notifications, setNotifications] = useState(true);
     const [soundEffects, setSoundEffects] = useState(true);
     const [vibration, setVibration] = useState(true);
@@ -25,69 +28,82 @@ export default function SettingsPage() {
         router.push('/auth');
     };
 
+    const getLanguageName = (code: string) => {
+        switch (code) {
+            case 'tr': return 'Türkçe';
+            case 'en': return 'English';
+            default: return 'Türkçe';
+        }
+    };
+
     const settingsSections = [
         {
-            title: 'Hesap',
+            title: t('settings.sections.account'),
             items: [
-                { icon: User, label: 'Profili Düzenle', href: '/settings/profile' },
-                { icon: Mail, label: 'Email Değiştir', href: '/settings/email' },
-                { icon: Lock, label: 'Şifre Değiştir', href: '/settings/password' },
+                { icon: User, label: t('settings.items.profile'), href: '/profile' },
+                { icon: Mail, label: t('settings.items.email'), href: '#' },
+                { icon: Lock, label: t('settings.items.password'), href: '#' },
             ]
         },
         {
-            title: 'Tercihler',
+            title: t('settings.sections.preferences'),
             items: [
                 {
                     icon: theme === 'dark' ? Moon : Sun,
-                    label: 'Karanlık Mod',
+                    label: t('settings.items.darkMode'),
                     toggle: true,
                     value: theme === 'dark',
                     onChange: toggleTheme
                 },
                 {
                     icon: Bell,
-                    label: 'Bildirimler',
+                    label: t('settings.items.notifications'),
                     toggle: true,
                     value: notifications,
                     onChange: () => setNotifications(!notifications)
                 },
                 {
                     icon: Volume2,
-                    label: 'Ses Efektleri',
+                    label: t('settings.items.soundEffects'),
                     toggle: true,
                     value: soundEffects,
                     onChange: () => setSoundEffects(!soundEffects)
                 },
                 {
                     icon: Vibrate,
-                    label: 'Titreşim',
+                    label: t('settings.items.vibration'),
                     toggle: true,
                     value: vibration,
                     onChange: () => setVibration(!vibration)
                 },
                 {
                     icon: Clock,
-                    label: 'Günlük Hatırlatıcı',
+                    label: t('settings.items.reminder'),
                     value: dailyReminder,
                     type: 'time'
                 },
-                { icon: Globe, label: 'Dil', value: 'Türkçe', href: '/settings/language' },
+                {
+                    icon: Globe,
+                    label: t('settings.items.language'),
+                    value: getLanguageName(language),
+                    href: '/settings/language'
+                },
             ]
         },
         {
-            title: 'Destek',
+            title: t('settings.sections.support'),
             items: [
-                { icon: HelpCircle, label: 'Yardım Merkezi', href: '/help' },
-                { icon: Mail, label: 'Bize Ulaşın', href: '/contact' },
-                { icon: Star, label: 'Uygulamayı Puanla', action: 'rate' },
+                { icon: HelpCircle, label: t('settings.items.help'), href: '#' },
+                { icon: Mail, label: t('settings.items.contact'), href: '#' },
+                { icon: Star, label: t('settings.items.rate'), action: 'rate' },
             ]
         },
         {
-            title: 'Gizlilik',
+            title: t('settings.sections.privacy'),
             items: [
-                { icon: Shield, label: 'Gizlilik Politikası', href: '/privacy' },
-                { icon: Shield, label: 'Kullanım Şartları', href: '/terms' },
-                { icon: Trash2, label: 'Hesabı Sil', href: '/settings/delete', danger: true },
+                { icon: Shield, label: t('settings.items.privacy'), href: '#' },
+                { icon: Shield, label: t('settings.items.terms'), href: '#' },
+                { icon: Trash2, label: t('settings.items.deleteAccount'), href: '#', danger: true },
             ]
         },
     ];
@@ -98,9 +114,9 @@ export default function SettingsPage() {
             <div className="sticky top-0 z-10 glass border-b border-border">
                 <div className="flex items-center gap-4 p-4">
                     <button onClick={() => router.back()} className="p-2 hover:bg-secondary rounded-xl transition-colors">
-                        <ArrowLeft className="w-5 h-5 text-foreground" />
+                        <ArrowLeft className="w-5 h-5 text-foreground rtl-flip" />
                     </button>
-                    <h1 className="text-xl font-bold text-foreground">Ayarlar</h1>
+                    <h1 className="text-xl font-bold text-foreground">{t('settings.title')}</h1>
                 </div>
             </div>
 
@@ -124,7 +140,7 @@ export default function SettingsPage() {
                                         const i = item as any
                                         if (i.toggle && i.onChange) {
                                             i.onChange();
-                                        } else if (i.href) {
+                                        } else if (i.href && i.href !== '#') {
                                             router.push(i.href);
                                         } else if (i.action === 'rate') {
                                             window.open('https://play.google.com/store', '_blank');
@@ -169,10 +185,10 @@ export default function SettingsPage() {
                                     ) : (item as any).value ? (
                                         <div className="flex items-center gap-2">
                                             <span className="text-muted-foreground text-sm font-medium">{(item as any).value}</span>
-                                            <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
+                                            <ChevronRight className="w-4 h-4 text-muted-foreground/50 rtl-flip" />
                                         </div>
                                     ) : (
-                                        <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                                        <ChevronRight className="w-5 h-5 text-muted-foreground/50 rtl-flip" />
                                     )}
                                 </button>
                             ))}
@@ -188,13 +204,13 @@ export default function SettingsPage() {
                     onClick={handleLogout}
                     className="w-full flex items-center justify-center gap-2 p-4 bg-destructive/10 text-destructive rounded-2xl font-semibold hover:bg-destructive/20 transition-colors shadow-none"
                 >
-                    <LogOut className="w-5 h-5" />
-                    Çıkış Yap
+                    <LogOut className="w-5 h-5 rtl-flip" />
+                    {t('settings.items.logout')}
                 </motion.button>
 
                 {/* App Version */}
                 <p className="text-center text-xs text-muted-foreground pt-4 pb-2">
-                    KonuşKoç v1.0.0
+                    {t('settings.items.version')}
                 </p>
             </div>
 
