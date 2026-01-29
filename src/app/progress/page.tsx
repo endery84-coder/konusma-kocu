@@ -1,26 +1,39 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
 import {
-    User, Settings, Award, TrendingUp, Calendar,
-    BarChart2, Clock, MapPin, Edit3, LogOut, ChevronRight, Target
+    Settings, Award, Calendar,
+    BarChart2, Edit3, LogOut, ChevronRight, Target
 } from 'lucide-react';
-import {
-    BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
-    RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
-} from 'recharts';
+import dynamic from 'next/dynamic';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { supabase } from '@/lib/supabase';
 import { badges } from '@/lib/data/badges';
 import BottomNav from '@/components/BottomNav';
+import { useBadgeSystem } from '@/hooks/useBadgeSystem';
+
+const WeeklyActivityChart = dynamic(() => import('@/components/WeeklyActivityChart'), { ssr: false });
+const SkillsMapChart = dynamic(() => import('@/components/SkillsMapChart'), { ssr: false });
+
+interface UserProfile {
+    id: string;
+    full_name: string;
+    email?: string;
+    created_at: string;
+    streak_days: number;
+    total_xp: number;
+    firstName: string;
+    joinDate: string;
+}
 
 export default function ProfilePage() {
     const router = useRouter();
-    const { t } = useLanguage();
-    const [user, setUser] = useState<any>(null);
+    const { t, language } = useLanguage();
+    const [user, setUser] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
+
+    useBadgeSystem(user, setUser, t);
 
     // Mock Data for Charts (Later connected to DB)
     const weeklyData = [
@@ -58,8 +71,8 @@ export default function ProfilePage() {
 
                 setUser({
                     ...profile,
-                    firstName: profile?.full_name?.split(' ')[0] || 'Kullanıcı',
-                    joinDate: new Date(profile?.created_at || Date.now()).toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' })
+                    firstName: profile?.full_name?.split(' ')[0] || t('common.user'),
+                    joinDate: new Date(profile?.created_at || Date.now()).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', { month: 'long', year: 'numeric' })
                 });
             } catch (error) {
                 console.error(error);
@@ -86,7 +99,7 @@ export default function ProfilePage() {
                         {user?.full_name?.[0] || 'U'}
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold text-foreground">{user?.full_name || 'Kullanıcı'}</h1>
+                        <h1 className="text-2xl font-bold text-foreground">{user?.full_name || t('common.user')}</h1>
                         <p className="text-muted-foreground flex items-center gap-1 text-sm">
                             <Calendar className="w-3 h-3" /> {t('profile.joined')} {user?.joinDate}
                         </p>
@@ -123,42 +136,20 @@ export default function ProfilePage() {
                 <div className="bg-card p-5 rounded-3xl border border-border shadow-sm">
                     <div className="flex items-center gap-2 mb-4">
                         <BarChart2 className="w-5 h-5 text-primary" />
-                        <h3 className="font-bold text-foreground">Haftalık Aktivite</h3>
+                        <h3 className="font-bold text-foreground">{t('progress.weeklyActivity')}</h3>
                     </div>
                     <div className="h-48 w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={weeklyData}>
-                                <XAxis dataKey="name" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                                <Tooltip
-                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                                    cursor={{ fill: 'rgba(0,0,0,0.05)' }}
-                                />
-                                <Bar dataKey="min" fill="currentColor" className="text-primary" radius={[4, 4, 0, 0]} />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <WeeklyActivityChart data={weeklyData} />
                     </div>
                 </div>
 
                 <div className="bg-card p-5 rounded-3xl border border-border shadow-sm">
                     <div className="flex items-center gap-2 mb-4">
                         <Target className="w-5 h-5 text-accent" />
-                        <h3 className="font-bold text-foreground">Yetenek Haritası</h3>
+                        <h3 className="font-bold text-foreground">{t('progress.skillsMap')}</h3>
                     </div>
                     <div className="h-56 w-full -ml-4">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillData}>
-                                <PolarGrid strokeOpacity={0.2} />
-                                <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: '#888' }} />
-                                <Radar
-                                    name="Skills"
-                                    dataKey="A"
-                                    stroke="currentColor"
-                                    className="text-primary"
-                                    fill="currentColor"
-                                    fillOpacity={0.4}
-                                />
-                            </RadarChart>
-                        </ResponsiveContainer>
+                        <SkillsMapChart data={skillData} />
                     </div>
                 </div>
 
@@ -166,7 +157,7 @@ export default function ProfilePage() {
                 <div className="bg-card p-5 rounded-3xl border border-border shadow-sm">
                     <div className="flex items-center gap-2 mb-4">
                         <Award className="w-5 h-5 text-yellow-500" />
-                        <h3 className="font-bold text-foreground">Rozetlerim</h3>
+                        <h3 className="font-bold text-foreground">{t('profile.myBadges')}</h3>
                     </div>
                     <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                         {badges.map((badge) => {
@@ -188,12 +179,12 @@ export default function ProfilePage() {
                                         {badge.icon}
                                     </div>
                                     <span className="text-[10px] text-center font-medium leading-tight line-clamp-2 max-w-[60px]">
-                                        {t(`profile.badges.${badge.key}.name` as any)}
+                                        {t(`profile.badges.${badge.key}.name` as string)}
                                     </span>
 
                                     {/* Tooltip */}
                                     <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-popover text-popover-foreground text-xs px-2 py-1 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10 border border-border">
-                                        {t(`profile.badges.${badge.key}.desc` as any)}
+                                        {t(`profile.badges.${badge.key}.desc` as string)}
                                     </div>
                                 </div>
                             );
@@ -224,12 +215,12 @@ export default function ProfilePage() {
                 </div>
             </div>
 
-            <BottomNav />
+
         </div>
     );
 }
 
-function Flame(props: any) {
+function Flame(props: React.SVGProps<SVGSVGElement>) {
     return (
         <svg
             {...props}

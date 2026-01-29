@@ -8,14 +8,15 @@ import {
     User, Mail, Lock, Trash2
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useTheme } from '@/lib/theme-provider';
+import { useTheme } from 'next-themes';
 import { supabase } from '@/lib/supabase';
 import BottomNav from '@/components/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function SettingsPage() {
     const router = useRouter();
-    const { theme, toggleTheme } = useTheme();
+    const { theme, setTheme } = useTheme();
+    const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
     const { t, language } = useLanguage();
 
     const [notifications, setNotifications] = useState(true);
@@ -214,7 +215,7 @@ export default function SettingsPage() {
                 </p>
             </div>
 
-            <BottomNav />
+
         </div>
     );
 }

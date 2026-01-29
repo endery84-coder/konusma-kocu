@@ -1,6 +1,8 @@
 "use client";
 
 import { ReactNode } from 'react';
+import Link from 'next/link';
+import BottomNav from './BottomNav';
 
 interface MobileContainerProps {
     children: ReactNode;
@@ -30,6 +32,9 @@ export default function MobileContainer({ children }: MobileContainerProps) {
                     {/* Home indicator için alt boşluk (masaüstünde) */}
                     <div className="hidden md:block h-6 w-full shrink-0" />
                 </div>
+
+                {/* Global Bottom Vax */}
+                <BottomNav />
             </div>
         </div>
     );

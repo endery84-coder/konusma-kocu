@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import BottomNav from '@/components/BottomNav';
 
 const difficultyLabels = ['', 'Kolay', 'Orta', 'Zor', 'Uzman'];
 const difficultyColors = ['', 'text-emerald-500', 'text-amber-500', 'text-orange-500', 'text-red-500'];
@@ -221,8 +220,8 @@ export default function ExerciseDetailPage() {
                         <button
                             onClick={handleStart}
                             className={`w-full py-4 font-semibold rounded-2xl flex items-center justify-center gap-2 shadow-lg ${exercise.is_premium && !isPremiumUser
-                                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white'
-                                    : 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white'
+                                ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white'
+                                : 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white'
                                 }`}
                         >
                             {exercise.is_premium && !isPremiumUser ? (
@@ -292,7 +291,7 @@ export default function ExerciseDetailPage() {
                 )}
             </div>
 
-            <BottomNav />
+
         </div>
     );
 }

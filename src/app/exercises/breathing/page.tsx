@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ArrowLeft, Play, Pause, X, RotateCcw, Wind } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -109,7 +109,7 @@ export default function BreathingExercisePage() {
     };
 
     // Animation variants
-    const circleVariants = {
+    const circleVariants: Variants = {
         idle: { scale: 1, opacity: 0.5 },
         ready: { scale: 1.1, opacity: 0.8 },
         inhale: { scale: 2.5, transition: { duration: config.inhale, ease: "easeInOut" } },
@@ -203,12 +203,12 @@ export default function BreathingExercisePage() {
                 <div className="mt-16 text-center space-y-2">
                     {!isActive && phase === 'idle' && (
                         <p className="text-slate-400 max-w-xs mx-auto">
-                            4-7-8 tekniği ile rahatla. Nefes al, tut ve yavaşça ver.
+                            {t('exercises.breathing.guide')}
                         </p>
                     )}
                     {isActive && (
                         <p className="text-slate-400">
-                            Döngü: {cycles} • Süre: {Math.floor(totalTime / 60)}:{(totalTime % 60).toString().padStart(2, '0')}
+                            {t('exercises.breathing.stats', { cycles: cycles, time: `${Math.floor(totalTime / 60)}:${(totalTime % 60).toString().padStart(2, '0')}` })}
                         </p>
                     )}
                 </div>
@@ -226,9 +226,9 @@ export default function BreathingExercisePage() {
                     ) : phase === 'completed' ? (
                         <div className="space-y-4">
                             <div className="bg-white/10 rounded-3xl p-6 text-center backdrop-blur-md">
-                                <h3 className="text-2xl font-bold text-white mb-2">Harika İş! 🎉</h3>
+                                <h3 className="text-2xl font-bold text-white mb-2">{t('exercises.breathing.greatJob')}</h3>
                                 <p className="text-slate-300 mb-4">
-                                    {totalTime} saniye boyunca bilinçli nefes egzersizi yaptın.
+                                    {t('exercises.breathing.summary', { time: totalTime })}
                                 </p>
                                 <div className="flex items-center justify-center gap-2 text-yellow-400 font-bold text-xl">
                                     <span>+{(totalTime / 10).toFixed(0)} XP</span>
@@ -246,7 +246,7 @@ export default function BreathingExercisePage() {
                                     className="flex-1 py-4 bg-cyan-500 rounded-2xl text-white font-semibold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2"
                                 >
                                     <RotateCcw className="w-5 h-5" />
-                                    Tekrar
+                                    {t('exercises.breathing.again')}
                                 </button>
                             </div>
                         </div>

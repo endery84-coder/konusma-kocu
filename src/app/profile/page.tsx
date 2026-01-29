@@ -211,7 +211,7 @@ export default function ProfilePage() {
                 </motion.div>
             </div>
 
-            <BottomNav />
+
         </div>
     );
 }

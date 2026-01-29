@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Mic, StopCircle, Sliders, Volume2, Info, Ear } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -55,7 +55,7 @@ export default function DAFExercisePage() {
                     echoCancellation: false,
                     noiseSuppression: false, // DAF needs clean, raw audio usually
                     autoGainControl: false,
-                    latency: 0
+
                 }
             });
 
@@ -167,7 +167,7 @@ export default function DAFExercisePage() {
                 </button>
                 <div className="flex items-center gap-2">
                     <Ear className="w-5 h-5 text-cyan-400" />
-                    <h1 className="text-lg font-bold tracking-wide">DAF Asistanı</h1>
+                    <h1 className="text-lg font-bold tracking-wide">{t('exercises.daf.title')}</h1>
                 </div>
                 <button
                     onClick={() => setIsSettingsOpen(!isSettingsOpen)}
@@ -207,10 +207,10 @@ export default function DAFExercisePage() {
                                 <>
                                     <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse mb-2 shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
                                     <span className="text-2xl font-bold font-mono text-white">{delay}ms</span>
-                                    <span className="text-xs text-slate-400 mt-1">Gecikme</span>
+                                    <span className="text-xs text-slate-400 mt-1">{t('exercises.daf.delay')}</span>
                                 </>
                             ) : (
-                                <span className="text-slate-500 text-sm">Hazır</span>
+                                <span className="text-slate-500 text-sm">{t('exercises.daf.ready')}</span>
                             )}
                         </div>
                     </div>
@@ -219,10 +219,10 @@ export default function DAFExercisePage() {
                 {/* Info Text */}
                 <div className="text-center max-w-sm mb-12">
                     <h2 className="text-xl font-semibold mb-2 text-white">
-                        {isActive ? "Şimdi Konuşun" : "Konuşmaya Başla"}
+                        {isActive ? t('exercises.daf.speakNow') : t('exercises.daf.startSpeaking')}
                     </h2>
                     <p className="text-slate-400 text-sm">
-                        Kendi sesinizi milisaniyeler sonra duyarak konuşma akıcılığınızı ve hızınızı kontrol edin.
+                        {t('exercises.daf.info')}
                     </p>
                 </div>
 
@@ -260,16 +260,16 @@ export default function DAFExercisePage() {
                         >
                             <div className="flex justify-between items-center mb-8">
                                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                                    <Sliders className="w-5 h-5 text-cyan-400" /> Ayarlar
+                                    <Sliders className="w-5 h-5 text-cyan-400" /> {t('settings.title')}
                                 </h3>
-                                <button onClick={() => setIsSettingsOpen(false)} className="text-sm text-cyan-400 font-medium">Tamam</button>
+                                <button onClick={() => setIsSettingsOpen(false)} className="text-sm text-cyan-400 font-medium">{t('common.ok')}</button>
                             </div>
 
                             <div className="space-y-8">
                                 {/* Delay Slider */}
                                 <div>
                                     <div className="flex justify-between mb-4">
-                                        <label className="text-sm text-slate-300 font-medium">Gecikme Süresi</label>
+                                        <label className="text-sm text-slate-300 font-medium">{t('exercises.daf.delayTime')}</label>
                                         <span className="text-sm font-bold text-cyan-400">{delay} ms</span>
                                     </div>
                                     <input
@@ -282,8 +282,8 @@ export default function DAFExercisePage() {
                                         className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500"
                                     />
                                     <div className="flex justify-between mt-2 text-xs text-slate-500">
-                                        <span>0ms (Anlık)</span>
-                                        <span>500ms (Yarım Sn)</span>
+                                        <span>{t('exercises.daf.instant')}</span>
+                                        <span>{t('exercises.daf.halfSec')}</span>
                                     </div>
                                 </div>
 
@@ -291,7 +291,7 @@ export default function DAFExercisePage() {
                                 <div>
                                     <div className="flex justify-between mb-4">
                                         <label className="text-sm text-slate-300 font-medium flex items-center gap-2">
-                                            <Volume2 className="w-4 h-4" /> Ses Seviyesi
+                                            <Volume2 className="w-4 h-4" /> {t('exercises.daf.volume')}
                                         </label>
                                         <span className="text-sm font-bold text-cyan-400">{Math.round(volume * 100)}%</span>
                                     </div>
@@ -310,6 +310,6 @@ export default function DAFExercisePage() {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+        </div >
     );
 }

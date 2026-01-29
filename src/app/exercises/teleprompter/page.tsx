@@ -128,15 +128,15 @@ export default function TeleprompterPage() {
                         className="absolute bottom-0 left-0 right-0 bg-slate-900 border-t border-white/10 p-6 rounded-t-3xl z-30 shadow-2xl pb-safe"
                     >
                         <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-lg font-bold text-white">Ayarlar</h3>
-                            <button onClick={() => setIsSettingsOpen(false)} className="text-slate-400 hover:text-white">Kapat</button>
+                            <h3 className="text-lg font-bold text-white">{t('settings.title')}</h3>
+                            <button onClick={() => setIsSettingsOpen(false)} className="text-slate-400 hover:text-white">{t('common.close')}</button>
                         </div>
 
                         <div className="space-y-6">
                             {/* Speed */}
                             <div>
                                 <label className="flex justify-between text-sm text-slate-400 mb-2">
-                                    <span>Akış Hızı</span>
+                                    <span>{t('exercises.teleprompter.speed')}</span>
                                     <span className="text-cyan-400 font-bold">{Math.round(speed / 10)}x</span>
                                 </label>
                                 <input
@@ -153,7 +153,7 @@ export default function TeleprompterPage() {
                             {/* Font Size */}
                             <div>
                                 <label className="flex justify-between text-sm text-slate-400 mb-2">
-                                    <span>Yazı Boyutu</span>
+                                    <span>{t('exercises.teleprompter.fontSize')}</span>
                                     <span className="text-cyan-400 font-bold">{fontSize}px</span>
                                 </label>
                                 <input
@@ -171,7 +171,7 @@ export default function TeleprompterPage() {
                             <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                                 <div className="flex items-center gap-3">
                                     <Type className="w-5 h-5 text-slate-400" />
-                                    <span className="text-white">Ayna Modu</span>
+                                    <span className="text-white">{t('exercises.teleprompter.mirror')}</span>
                                 </div>
                                 <label className="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" checked={isMirrored} onChange={(e) => setIsMirrored(e.target.checked)} className="sr-only peer" />
@@ -181,7 +181,7 @@ export default function TeleprompterPage() {
 
                             {/* Text Input Toggle */}
                             <div className="text-xs text-slate-500 text-center mt-4">
-                                * Metni değiştirmek için ekrana dokunun ve yazın (oynatma durdurulduğunda).
+                                {t('exercises.teleprompter.editHint')}
                             </div>
                         </div>
                     </motion.div>

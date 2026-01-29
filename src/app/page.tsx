@@ -12,7 +12,7 @@ import { supabase } from '@/lib/supabase';
 import BottomNav from '@/components/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { dailyQuotes } from '@/lib/data/quotes';
-import { Bell } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function HomePage() {
   const router = useRouter();
@@ -71,6 +71,33 @@ export default function HomePage() {
           preferences,
           firstName: profile?.full_name?.split(' ')[0] || t('common.user')
         });
+
+        // Streak Warning Logic
+        if ((profile?.streak_days || 0) > 0) {
+          const { data: lastProgress } = await supabase
+            .from('user_progress')
+            .select('completed_at')
+            .eq('user_id', authUser.id)
+            .order('completed_at', { ascending: false })
+            .limit(1)
+            .single();
+
+          const lastDate = lastProgress ? new Date(lastProgress.completed_at) : null;
+          const today = new Date();
+          const isToday = lastDate &&
+            lastDate.getDate() === today.getDate() &&
+            lastDate.getMonth() === today.getMonth() &&
+            lastDate.getFullYear() === today.getFullYear();
+
+          if (!isToday && today.getHours() >= 18) {
+            const warningMsg = t('home.streakWarning');
+            toast.warning(warningMsg, { duration: 6000 });
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification('KonuşKoç', { body: warningMsg, icon: '/icon.png' });
+            }
+          }
+        }
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -108,7 +135,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-white/80 text-sm">{t(`home.greeting.${greeting}`)} 👋</p>
-            <h1 className="text-white text-xl font-bold">{user?.firstName || t('common.user')}</h1>
+            <h1 className="text-white text-xl font-bold">{user?.full_name || user?.firstName || t('common.user')}</h1>
           </div>
           <motion.div
             whileTap={{ scale: 0.95 }}
@@ -206,8 +233,8 @@ export default function HomePage() {
                 🫁
               </div>
               <div className="flex-1">
-                <h3 className="font-medium text-foreground">Diyafram Nefesi</h3>
-                <p className="text-sm text-muted-foreground">Nefes kontrolü • 5 dk</p>
+                <h3 className="font-medium text-foreground">{t('exercises.breathing.title')}</h3>
+                <p className="text-sm text-muted-foreground">{t('exercises.breathing.desc')} • 5 {t('progress.minutes')}</p>
               </div>
               <div className="text-xs text-primary font-medium bg-primary/10 px-2 py-1 rounded-lg">
                 +15 XP
@@ -224,8 +251,8 @@ export default function HomePage() {
                 📖
               </div>
               <div className="flex-1">
-                <h3 className="font-medium text-foreground">Yavaş Okuma</h3>
-                <p className="text-sm text-muted-foreground">Akıcılık • 10 dk</p>
+                <h3 className="font-medium text-foreground">{t('exercises.rsvp.title')}</h3>
+                <p className="text-sm text-muted-foreground">{t('exercises.rsvp.desc')} • 10 {t('progress.minutes')}</p>
               </div>
               <div className="text-xs text-primary font-medium bg-primary/10 px-2 py-1 rounded-lg">
                 +20 XP
@@ -268,7 +295,7 @@ export default function HomePage() {
         </motion.div>
       </div>
 
-      <BottomNav />
+
     </div>
   );
 }

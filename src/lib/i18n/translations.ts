@@ -11,6 +11,12 @@ export const translations = {
             start: "Başlayalım",
             finish: "Tamamla",
             loading: "Yükleniyor...",
+            congrats: "Tebrikler",
+            close: "Kapat",
+            listening: "DİNLİYOR",
+            ok: "Tamam",
+            user: "Kullanıcı",
+            hour: "saat",
         },
         nav: {
             home: "Ana Sayfa",
@@ -49,6 +55,11 @@ export const translations = {
                 ready: "Hazır mısın?",
                 start: "Başla",
                 completed: "Tamamlandı",
+                guide: "4-7-8 tekniği ile rahatla. Nefes al, tut ve yavaşça ver.",
+                stats: "Döngü: {cycles} • Süre: {time}",
+                greatJob: "Harika İş! 🎉",
+                summary: "{time} saniye boyunca bilinçli nefes egzersizi yaptın.",
+                again: "Tekrar",
             },
             rsvp: {
                 title: "Hızlı Okuma (RSVP)",
@@ -57,6 +68,15 @@ export const translations = {
             daf: {
                 title: "DAF Asistanı",
                 desc: "Gecikmeli işitsel geri bildirim",
+                delay: "Gecikme",
+                ready: "Hazır",
+                speakNow: "Şimdi Konuşun",
+                startSpeaking: "Konuşmaya Başla",
+                info: "Kendi sesinizi milisaniyeler sonra duyarak konuşma akıcılığınızı ve hızınızı kontrol edin.",
+                delayTime: "Gecikme Süresi",
+                volume: "Ses Seviyesi",
+                instant: "0ms (Anlık)",
+                halfSec: "500ms (Yarım Sn)",
             },
             analysis: {
                 title: "Konuşma Analizi",
@@ -69,20 +89,39 @@ export const translations = {
                 fontSize: "Yazı Boyutu",
                 mirror: "Ayna Modu",
                 placeholder: "Metninizi buraya yapıştırın...",
+                editHint: "* Metni değiştirmek için ekrana dokunun ve yazın (oynatma durdurulduğunda).",
             },
             twisters: {
                 title: "Tekerleme Meydan Okuması",
                 desc: "Diksiyon ve telaffuz geliştirme",
                 new: "Yeni Tekerleme",
                 score: "Doğruluk Skoru",
+                feedbackExcellent: "Harika Telaffuz! 🎉",
+                feedbackPractice: "Biraz daha pratik 🛠️",
+                hint: "Mikrofona basın ve yukarıdaki metni okuyun...",
             },
             pitch: {
                 title: "Ses Analizi",
                 desc: "Ses tonu ve vurgu görselleştirme",
+                startPrompt: "Analiz için başlatın",
+                visualizerTitle: "Ses Tonu Görselleştirme",
+                visualizerDesc: "Konuşurken sesinizin frekans dağılımını izleyin. Monoton konuşmaktan kaçınmak için renklerin ve yüksekliklerin değiştiğini görmelisiniz.",
             },
             vocabulary: {
                 title: "Kelime Koçu",
                 desc: "Hedef kelimelerle konuşma pratiği",
+                levels: {
+                    beginner: "Başlangıç",
+                    intermediate: "Orta",
+                    advanced: "İleri",
+                },
+                complete: "Tüm kelimeleri tamamladın.",
+                greatJob: "Harika İş!",
+                runAgain: "Tekrarla",
+                points: "Puan",
+                targetWord: "Hedef Kelime",
+                word: "Kelime",
+                score: "Skor",
             }
         },
         progress: {
@@ -94,11 +133,13 @@ export const translations = {
             weeklyActivity: "Haftalık Aktivite",
             recentExercises: "Son Egzersizler",
             minutes: "dk",
+            skillsMap: "Yetenek Haritası",
         },
         profile: {
             title: "Profil",
             edit: "Düzenle",
             achievements: "Başarılar",
+            myBadges: "Rozetlerim",
             stats: "İstatistikler",
             joined: "Katılım Tarihi",
             badges: {
@@ -107,7 +148,8 @@ export const translations = {
                 early_bird: { name: "Erkenci Kuş", desc: "Sabah saatlerinde pratik yap" },
                 scholar: { name: "Kitap Kurdu", desc: "100 kelime öğren" },
                 master: { name: "Konuşma Ustası", desc: "1000 XP'ye ulaş" }
-            }
+            },
+            badgeUnlocked: "rozetini kazandın!",
         },
         home: {
             greeting: {
@@ -129,6 +171,11 @@ export const translations = {
             dailyQuote: "Günün Sözü",
             progressReport: "İlerleme Raporun",
             progressDesc: "Bu hafta {minutes} dakika pratik yaptın",
+            streakWarning: "Serini kaybetme! Bugün henüz pratik yapmadın.",
+            premium: {
+                button: "Premium'a Geç",
+                desc: "Tüm özelliklere eriş",
+            },
         },
         settings: {
             title: "Ayarlar",
@@ -201,6 +248,12 @@ export const translations = {
             start: "Let's Start",
             finish: "Complete",
             loading: "Loading...",
+            congrats: "Congratulations",
+            close: "Close",
+            listening: "LISTENING",
+            ok: "OK",
+            user: "User",
+            hour: "hour",
         },
         nav: {
             home: "Home",
@@ -239,6 +292,11 @@ export const translations = {
                 ready: "Are you ready?",
                 start: "Start",
                 completed: "Completed",
+                guide: "Relax with 4-7-8 technique. Inhale, hold, and exhale slowly.",
+                stats: "Cycle: {cycles} • Time: {time}",
+                greatJob: "Great Job! 🎉",
+                summary: "You practiced conscious breathing for {time} seconds.",
+                again: "Again",
             },
             rsvp: {
                 title: "Speed Reading (RSVP)",
@@ -247,6 +305,15 @@ export const translations = {
             daf: {
                 title: "DAF Assistant",
                 desc: "Delayed Auditory Feedback",
+                delay: "Delay",
+                ready: "Ready",
+                speakNow: "Speak Now",
+                startSpeaking: "Start Speaking",
+                info: "Hear your own voice with a slight delay to control your fluency and speed.",
+                delayTime: "Delay Time",
+                volume: "Volume",
+                instant: "0ms (Instant)",
+                halfSec: "500ms (Half Sec)",
             },
             analysis: {
                 title: "Speech Analysis",
@@ -259,20 +326,39 @@ export const translations = {
                 fontSize: "Font Size",
                 mirror: "Mirror Mode",
                 placeholder: "Paste your text here...",
+                editHint: "* Tap screen and type to edit text (when paused).",
             },
             twisters: {
                 title: "Tongue Twisters",
                 desc: "Improve diction and pronunciation",
                 new: "New Twister",
                 score: "Accuracy Score",
+                feedbackExcellent: "Great Pronunciation! 🎉",
+                feedbackPractice: "Need more practice 🛠️",
+                hint: "Press mic and read the text above...",
             },
             pitch: {
                 title: "Voice Analysis",
                 desc: "Visualize tone and pitch",
+                startPrompt: "Start analysis",
+                visualizerTitle: "Pitch Visualization",
+                visualizerDesc: "Observe the frequency distribution of your voice. You should see changes in heights to avoid monotone speech.",
             },
             vocabulary: {
                 title: "Vocabulary Coach",
                 desc: "Practice speaking with target words",
+                levels: {
+                    beginner: "Beginner",
+                    intermediate: "Intermediate",
+                    advanced: "Advanced",
+                },
+                complete: "You completed all words.",
+                greatJob: "Great Job!",
+                runAgain: "Practice Again",
+                points: "Points",
+                targetWord: "Target Word",
+                word: "Word",
+                score: "Score",
             }
         }, progress: {
             title: "Progress",
@@ -283,11 +369,13 @@ export const translations = {
             weeklyActivity: "Weekly Activity",
             recentExercises: "Recent Exercises",
             minutes: "min",
+            skillsMap: "Skills Map",
         },
         profile: {
             title: "Profile",
             edit: "Edit",
             achievements: "Achievements",
+            myBadges: "My Badges",
             stats: "Statistics",
             joined: "Joined",
             badges: {
@@ -296,7 +384,8 @@ export const translations = {
                 early_bird: { name: "Early Bird", desc: "Practice in the morning" },
                 scholar: { name: "Scholar", desc: "Learn 100 words" },
                 master: { name: "Speech Master", desc: "Reach 1000 XP" }
-            }
+            },
+            badgeUnlocked: "badge unlocked!",
         },
         home: {
             greeting: {
@@ -318,6 +407,11 @@ export const translations = {
             dailyQuote: "Daily Quote",
             progressReport: "Progress Report",
             progressDesc: "You practiced {minutes} minutes this week",
+            streakWarning: "Don't lose your streak! You haven't practiced today.",
+            premium: {
+                button: "Go Premium",
+                desc: "Unlock all features",
+            },
         },
         settings: {
             title: "Settings",

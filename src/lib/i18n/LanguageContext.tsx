@@ -37,17 +37,36 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
     const t = (path: string, params?: Record<string, string | number>): string => {
         const keys = path.split('.');
-        let current: any = (translations as any)[language] || translations.tr;
 
-        for (const key of keys) {
-            if (current[key] === undefined) {
-                console.warn(`Translation missing for key: ${path}`);
-                return path;
+        // Helper to traverse object
+        const getValue = (obj: any, keyPath: string[]) => {
+            let current = obj;
+            for (const key of keyPath) {
+                if (current === undefined || current[key] === undefined) return undefined;
+                current = current[key];
             }
-            current = current[key];
+            return current;
+        };
+
+        // 1. Try selected language
+        let value = getValue((translations as any)[language], keys);
+
+        // 2. Fallback to English
+        if (value === undefined) {
+            value = getValue(translations.en, keys);
         }
 
-        let result = current as string;
+        // 3. Fallback to Turkish (Base)
+        if (value === undefined) {
+            value = getValue(translations.tr, keys);
+        }
+
+        if (value === undefined) {
+            // console.warn(`Translation missing for key: ${path}`);
+            return path;
+        }
+
+        let result = value as string;
 
         if (params) {
             Object.entries(params).forEach(([key, value]) => {

@@ -93,7 +93,7 @@ export default function VocabularyCoachPage() {
                 <button onClick={() => router.back()} className="p-2 hover:bg-secondary rounded-xl transition-colors">
                     <ArrowLeft className="w-5 h-5 text-foreground rtl-flip" />
                 </button>
-                <h1 className="font-bold text-foreground">Kelime Koçu</h1>
+                <h1 className="font-bold text-foreground">{t('exercises.vocabulary.title')}</h1>
                 <div className="w-8" />
             </div>
 
@@ -107,7 +107,7 @@ export default function VocabularyCoachPage() {
                             onClick={() => setLevel(l)}
                             className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${level === l ? 'bg-background shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
                         >
-                            {l === 'beginner' ? 'Başlangıç' : l === 'intermediate' ? 'Orta' : 'İleri'}
+                            {l === 'beginner' ? t('exercises.vocabulary.levels.beginner') : l === 'intermediate' ? t('exercises.vocabulary.levels.intermediate') : t('exercises.vocabulary.levels.advanced')}
                         </button>
                     ))}
                 </div>
@@ -123,11 +123,11 @@ export default function VocabularyCoachPage() {
                                 className="text-center"
                             >
                                 <div className="text-6xl mb-4">🎉</div>
-                                <h2 className="text-2xl font-bold text-primary mb-2">Harika İş!</h2>
-                                <p className="text-muted-foreground">Tüm kelimeleri tamamladın.</p>
-                                <div className="mt-6 text-4xl font-black text-foreground">{score} Puan</div>
+                                <h2 className="text-2xl font-bold text-primary mb-2">{t('exercises.vocabulary.greatJob')}</h2>
+                                <p className="text-muted-foreground">{t('exercises.vocabulary.complete')}</p>
+                                <div className="mt-6 text-4xl font-black text-foreground">{score} {t('exercises.vocabulary.points')}</div>
                                 <button onClick={() => { setCurrentWordIndex(0); setScore(0); setFeedback(null); }} className="mt-8 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:shadow-lg transition-all">
-                                    Tekrarla
+                                    {t('exercises.vocabulary.runAgain')}
                                 </button>
                             </motion.div>
                         ) : (
@@ -138,7 +138,7 @@ export default function VocabularyCoachPage() {
                                 exit={{ y: -20, opacity: 0 }}
                                 className="flex flex-col items-center gap-6"
                             >
-                                <div className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Hedef Kelime</div>
+                                <div className="text-sm font-medium text-muted-foreground uppercase tracking-widest">{t('exercises.vocabulary.targetWord')}</div>
                                 <h2 className="text-5xl md:text-6xl font-black text-foreground tracking-tight text-center break-words w-full">
                                     {words[currentWordIndex]}
                                 </h2>
@@ -172,8 +172,8 @@ export default function VocabularyCoachPage() {
 
                 {/* Status */}
                 <div className="flex justify-between w-full px-4 text-sm font-medium text-muted-foreground">
-                    <span>Kelime {feedback !== 'coaching_complete' ? currentWordIndex + 1 : words.length} / {words.length}</span>
-                    <span>Skor: {score}</span>
+                    <span>{t('exercises.vocabulary.word')} {feedback !== 'coaching_complete' ? currentWordIndex + 1 : words.length} / {words.length}</span>
+                    <span>{t('exercises.vocabulary.score')}: {score}</span>
                 </div>
 
                 {/* Controls */}

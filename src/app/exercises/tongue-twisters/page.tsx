@@ -86,7 +86,7 @@ export default function TongueTwistersPage() {
                 </button>
                 <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-yellow-500" />
-                    <h1 className="font-bold text-foreground">Tekerleme</h1>
+                    <h1 className="font-bold text-foreground">{t('exercises.twisters.title')}</h1>
                 </div>
                 <button onClick={getNewTwister} className="p-2 hover:bg-secondary rounded-xl transition-colors text-primary">
                     <RefreshCw className="w-5 h-5" />
@@ -118,7 +118,7 @@ export default function TongueTwistersPage() {
                         >
                             <div className="text-6xl font-black mb-2">{score}%</div>
                             <span className="font-medium bg-secondary px-3 py-1 rounded-full text-sm">
-                                {score > 80 ? "Harika Telaffuz! 🎉" : "Biraz daha pratik 🛠️"}
+                                {score > 80 ? t('exercises.twisters.feedbackExcellent') : t('exercises.twisters.feedbackPractice')}
                             </span>
                         </motion.div>
                     )}
@@ -129,12 +129,12 @@ export default function TongueTwistersPage() {
                     {transcript ? (
                         <p className="text-lg text-foreground">{transcript}</p>
                     ) : (
-                        <p className="text-muted-foreground italic">Mikrofona basın ve yukarıdaki metni okuyun...</p>
+                        <p className="text-muted-foreground italic">{t('exercises.twisters.hint')}</p>
                     )}
                     {isListening && (
                         <div className="absolute top-2 right-2 flex gap-1 items-center">
                             <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                            <span className="text-xs text-red-500 font-bold">DİNLİYOR</span>
+                            <span className="text-xs text-red-500 font-bold">{t('common.listening')}</span>
                         </div>
                     )}
                 </div>

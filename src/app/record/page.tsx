@@ -11,7 +11,6 @@ import { useAudioRecorder } from '@/hooks/useAudioRecorder';
 import { useDAF } from '@/hooks/useDAF';
 import { useMetronome } from '@/hooks/useMetronome';
 import AudioWaveform from '@/components/AudioWaveform';
-import BottomNav from '@/components/BottomNav';
 
 // Sample texts for practice
 const practiceTexts = [
@@ -201,8 +200,8 @@ export default function RecordPage() {
                         whileTap={{ scale: 0.95 }}
                         onClick={handleRecordToggle}
                         className={`w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all ${isRecording
-                                ? 'bg-red-500 shadow-red-500/30'
-                                : 'bg-gradient-to-br from-teal-500 to-cyan-500 shadow-teal-500/30'
+                            ? 'bg-red-500 shadow-red-500/30'
+                            : 'bg-gradient-to-br from-teal-500 to-cyan-500 shadow-teal-500/30'
                             }`}
                     >
                         {isRecording ? (
@@ -390,7 +389,7 @@ export default function RecordPage() {
                 )}
             </div>
 
-            <BottomNav />
+
         </div>
     );
 }

@@ -18,9 +18,16 @@ export default function BottomNav() {
         { href: '/profile', icon: User, label: t('nav.profile') },
     ];
 
+    // Logic to hide bottom nav on specific routes
+    const hiddenRoutes = ['/welcome', '/onboarding', '/auth', '/premium'];
+    const isHidden = hiddenRoutes.some(route => pathname.startsWith(route)) ||
+        (pathname.startsWith('/exercises/') && pathname.split('/').length > 2); // Hide on exercise details
+
+    if (isHidden) return null;
+
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
-            <div className="max-w-[430px] mx-auto pointer-events-auto">
+        <nav className="absolute bottom-0 w-full z-50 pointer-events-none">
+            <div className="w-full h-full pointer-events-auto">
                 <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-white/20 dark:border-white/5 pb-safe">
                     <div className="flex justify-around items-center h-16 relative">
                         {navItems.map((item) => {

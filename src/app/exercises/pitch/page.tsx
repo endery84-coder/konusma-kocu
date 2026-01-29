@@ -101,7 +101,7 @@ export default function PitchAnalysisPage() {
                 <button onClick={() => router.back()} className="p-2 hover:bg-secondary rounded-xl transition-colors">
                     <ArrowLeft className="w-5 h-5 text-foreground rtl-flip" />
                 </button>
-                <h1 className="font-bold text-foreground">Ses Analizi (Pitch)</h1>
+                <h1 className="font-bold text-foreground">{t('exercises.pitch.title')}</h1>
                 <div className="w-8" />
             </div>
 
@@ -119,16 +119,16 @@ export default function PitchAnalysisPage() {
                     {!isAnalyzing && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center text-white/50 bg-black/50 backdrop-blur-sm">
                             <Activity className="w-16 h-16 mb-4 opacity-50" />
-                            <p>Analiz için başlatın</p>
+                            <p>{t('exercises.pitch.startPrompt')}</p>
                         </div>
                     )}
                 </div>
 
                 {/* Info Card */}
                 <div className="max-w-md text-center space-y-2">
-                    <h3 className="font-semibold text-lg text-foreground">Ses Tonu Görselleştirme</h3>
+                    <h3 className="font-semibold text-lg text-foreground">{t('exercises.pitch.visualizerTitle')}</h3>
                     <p className="text-muted-foreground text-sm">
-                        Konuşurken sesinizin frekans dağılımını izleyin. Monoton konuşmaktan kaçınmak için renklerin ve yüksekliklerin değiştiğini görmelisiniz.
+                        {t('exercises.pitch.visualizerDesc')}
                     </p>
                 </div>
 
