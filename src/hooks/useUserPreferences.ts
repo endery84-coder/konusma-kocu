@@ -1,9 +1,22 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
-import { Database } from "@/types/supabase" // I need to make sure types are saved, I haven't saved them to a file yet! 
-// Wait, I got the types in step 152 but didn't write them to a file. I should write them to src/types/supabase.ts first.
+import { Database } from "@/types/supabase"
 
+/**
+ * User preferences hook for managing personalized settings.
+ * Fetches and saves user preferences like goals, level, and daily targets.
+ * 
+ * @param {string} userId - Optional user ID to fetch preferences for
+ * @returns {{ preferences: object | null, loading: boolean, savePreferences: function }}
+ * @example
+ * ```tsx
+ * const { preferences, loading, savePreferences } = useUserPreferences(userId);
+ * 
+ * // Save new preferences
+ * await savePreferences({ daily_goal_minutes: 20 });
+ * ```
+ */
 export function useUserPreferences(userId?: string) {
     const [preferences, setPreferences] = useState<Database['public']['Tables']['user_preferences']['Row'] | null>(null)
     const [loading, setLoading] = useState(true)

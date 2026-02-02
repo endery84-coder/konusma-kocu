@@ -3,6 +3,23 @@ import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { Database } from "@/types/supabase"
 
+/**
+ * User progress tracking hook.
+ * Fetches and aggregates user progress data including streaks,
+ * weekly activity, completed exercises, and achievements.
+ * 
+ * @param {string} userId - The user's unique identifier
+ * @returns {{ progress: object, loading: boolean }} Progress data and loading state
+ * @example
+ * ```tsx
+ * const { progress, loading } = useProgress(userId);
+ * 
+ * if (!loading) {
+ *   console.log(`Streak: ${progress.streakDays} days`);
+ *   console.log(`Weekly minutes: ${progress.weeklyMinutes}`);
+ * }
+ * ```
+ */
 export function useProgress(userId: string) {
     const [progress, setProgress] = useState({
         streakDays: 0,

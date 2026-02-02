@@ -2,16 +2,48 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 
+/**
+ * Return type for the useSpeechRecognition hook
+ * @interface UseSpeechRecognitionReturn
+ */
 interface UseSpeechRecognitionReturn {
+    /** Whether speech recognition is actively listening */
     isListening: boolean;
+    /** The transcribed text from speech */
     transcript: string;
+    /** Starts listening for speech input */
     startListening: () => void;
+    /** Stops listening for speech input */
     stopListening: () => void;
+    /** Clears the current transcript */
     resetTranscript: () => void;
+    /** Error message if recognition fails */
     error: string | null;
+    /** Whether the browser supports speech recognition */
     isSupported: boolean;
 }
 
+/**
+ * Speech recognition hook using Web Speech API.
+ * Converts spoken words into text in real-time.
+ * Supports multiple languages with automatic detection.
+ * 
+ * @param {string} lang - BCP 47 language tag (default: 'tr-TR')
+ * @returns {UseSpeechRecognitionReturn} Object containing recognition state and controls
+ * @example
+ * ```tsx
+ * const { isListening, transcript, startListening, stopListening } = useSpeechRecognition('tr-TR');
+ * 
+ * // Start listening
+ * startListening();
+ * 
+ * // Display transcript
+ * console.log(transcript);
+ * 
+ * // Stop when done
+ * stopListening();
+ * ```
+ */
 export function useSpeechRecognition(lang: string = 'tr-TR'): UseSpeechRecognitionReturn {
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState('');

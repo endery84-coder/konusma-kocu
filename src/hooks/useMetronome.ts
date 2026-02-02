@@ -3,15 +3,45 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { METRONOME_DEFAULTS } from '@/lib/constants';
 
+/**
+ * Return type for the useMetronome hook
+ * @interface UseMetronomeReturn
+ */
 interface UseMetronomeReturn {
+    /** Whether the metronome is currently playing */
     isPlaying: boolean;
+    /** Current beats per minute */
     bpm: number;
+    /** Function to update the BPM value */
     setBpm: (bpm: number) => void;
+    /** Starts the metronome */
     start: () => void;
+    /** Stops the metronome */
     stop: () => void;
+    /** Current beat position (0-3 for 4/4 time) */
     currentBeat: number;
 }
 
+/**
+ * Metronome hook for rhythm and pacing exercises.
+ * Provides a configurable audio metronome with visual beat tracking.
+ * Useful for speech therapy to practice speaking at a consistent pace.
+ * 
+ * @returns {UseMetronomeReturn} Object containing metronome state and controls
+ * @example
+ * ```tsx
+ * const { isPlaying, bpm, setBpm, start, stop, currentBeat } = useMetronome();
+ * 
+ * // Start at 60 BPM
+ * start();
+ * 
+ * // Speed up to 80 BPM
+ * setBpm(80);
+ * 
+ * // Stop when done
+ * stop();
+ * ```
+ */
 export function useMetronome(): UseMetronomeReturn {
     const [isPlaying, setIsPlaying] = useState(false);
     const [bpm, setBpm] = useState<number>(METRONOME_DEFAULTS.DEFAULT_BPM);

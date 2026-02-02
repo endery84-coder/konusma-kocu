@@ -2,6 +2,26 @@
 
 import { useState, useEffect } from 'react';
 
+/**
+ * Persistent state hook using localStorage.
+ * Works like useState but persists the value to localStorage.
+ * Handles SSR gracefully by initializing on client-side mount.
+ * 
+ * @template T - The type of the stored value
+ * @param {string} key - The localStorage key to use
+ * @param {T} initialValue - The initial value if no stored value exists
+ * @returns {[T, (value: T | ((val: T) => T)) => void]} Tuple of [value, setValue]
+ * @example
+ * ```tsx
+ * const [theme, setTheme] = useLocalStorage('theme', 'dark');
+ * 
+ * // Update theme
+ * setTheme('light');
+ * 
+ * // Use callback form
+ * setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+ * ```
+ */
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
     // State to store our value
     // Pass initial state function to useState so logic is only executed once

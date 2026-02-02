@@ -2,20 +2,64 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 
+/**
+ * Return type for the useAudioRecorder hook
+ * @interface UseAudioRecorderReturn
+ */
 interface UseAudioRecorderReturn {
+    /** Whether recording is in progress */
     isRecording: boolean;
+    /** Whether recording is paused */
     isPaused: boolean;
+    /** Current recording duration in seconds */
     recordingTime: number;
+    /** URL to the recorded audio blob (for playback) */
     audioURL: string | null;
+    /** The recorded audio as a Blob */
     audioBlob: Blob | null;
+    /** Starts a new recording session */
     startRecording: () => Promise<void>;
+    /** Stops the current recording and saves the audio */
     stopRecording: () => void;
+    /** Pauses the current recording */
     pauseRecording: () => void;
+    /** Resumes a paused recording */
     resumeRecording: () => void;
+    /** Resets/clears the recorded audio */
     resetRecording: () => void;
+    /** Error message if recording fails */
     error: string | null;
 }
 
+/**
+ * Audio recording hook with pause/resume functionality.
+ * Captures audio from the user's microphone and provides
+ * playback and download capabilities.
+ * 
+ * @returns {UseAudioRecorderReturn} Object containing recording state and controls
+ * @example
+ * ```tsx
+ * const { 
+ *   isRecording, 
+ *   recordingTime, 
+ *   audioURL, 
+ *   startRecording, 
+ *   stopRecording 
+ * } = useAudioRecorder();
+ * 
+ * // Start recording
+ * await startRecording();
+ * 
+ * // Stop after some time
+ * stopRecording();
+ * 
+ * // Play back the recording
+ * if (audioURL) {
+ *   const audio = new Audio(audioURL);
+ *   audio.play();
+ * }
+ * ```
+ */
 export function useAudioRecorder(): UseAudioRecorderReturn {
     const [isRecording, setIsRecording] = useState(false);
     const [isPaused, setIsPaused] = useState(false);

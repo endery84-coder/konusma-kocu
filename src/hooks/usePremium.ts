@@ -3,14 +3,38 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
+/**
+ * Return type for the usePremium hook
+ * @interface UsePremiumReturn
+ */
 interface UsePremiumReturn {
+    /** Whether the user has an active premium subscription */
     isPremium: boolean;
+    /** The user's current plan ('monthly' or 'yearly') */
     plan: string | null;
+    /** When the premium subscription expires */
     expiresAt: Date | null;
+    /** Whether the premium status is being loaded */
     loading: boolean;
+    /** Function to manually refresh premium status */
     checkPremium: () => Promise<void>;
 }
 
+/**
+ * Premium subscription status hook.
+ * Checks if the current user has an active premium subscription
+ * and provides plan details and expiration information.
+ * 
+ * @returns {UsePremiumReturn} Premium status and control functions
+ * @example
+ * ```tsx
+ * const { isPremium, plan, loading } = usePremium();
+ * 
+ * if (!loading && isPremium) {
+ *   console.log(`Premium user on ${plan} plan`);
+ * }
+ * ```
+ */
 export function usePremium(): UsePremiumReturn {
     const [isPremium, setIsPremium] = useState(false);
     const [plan, setPlan] = useState<string | null>(null);

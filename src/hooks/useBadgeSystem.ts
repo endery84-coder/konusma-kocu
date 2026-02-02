@@ -3,6 +3,20 @@ import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { badges } from '@/lib/data/badges';
 
+/**
+ * Badge system hook for gamification.
+ * Automatically checks and awards badges based on user achievements.
+ * Shows toast notifications when new badges are earned.
+ * 
+ * @param {object} user - Current user object with stats (xp, streak, minutes)
+ * @param {function} setUser - Function to update user state
+ * @param {function} t - Translation function for localized messages
+ * @example
+ * ```tsx
+ * useBadgeSystem(user, setUser, t);
+ * // Badges are automatically checked and awarded based on user stats
+ * ```
+ */
 export function useBadgeSystem(user: any, setUser: (u: any) => void, t: (key: string) => string) {
     const processingRef = useRef(false);
 
