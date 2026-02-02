@@ -247,6 +247,11 @@ export const translations = {
             },
             processingTitle: "Planınız Oluşturuluyor",
             processingDesc: "Yapay zeka size uygun egzersizleri seçiyor...",
+            processingSteps: {
+                analyzing: "Hedefleriniz analiz ediliyor...",
+                selecting: "Egzersizler seçiliyor...",
+                creating: "Planınız oluşturuluyor...",
+            },
         }
     },
     en: {
@@ -494,6 +499,11 @@ export const translations = {
             },
             processingTitle: "Creating Your Plan",
             processingDesc: "AI is selecting the best exercises for you...",
+            processingSteps: {
+                analyzing: "Analyzing your goals...",
+                selecting: "Selecting exercises...",
+                creating: "Creating your plan...",
+            },
         }
     },
     de: {

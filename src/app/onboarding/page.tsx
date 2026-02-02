@@ -136,18 +136,59 @@ export default function Onboarding() {
                 );
 
             case 4: // Processing
+                const processingSteps = [
+                    { id: 1, text: t('onboarding.processingSteps.analyzing') || 'Analyzing your goals...' },
+                    { id: 2, text: t('onboarding.processingSteps.selecting') || 'Selecting exercises...' },
+                    { id: 3, text: t('onboarding.processingSteps.creating') || 'Creating your plan...' },
+                ];
                 return (
                     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8">
                         <div className="relative w-32 h-32">
-                            <div className="absolute inset-0 rounded-full border-4 border-teal-500/20 animate-ping" />
-                            <div className="absolute inset-0 rounded-full border-4 border-t-teal-500 animate-spin" />
+                            <motion.div
+                                className="absolute inset-0 rounded-full border-4 border-teal-500/20"
+                                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.2, 0.5] }}
+                                transition={{ repeat: Infinity, duration: 2 }}
+                            />
+                            <motion.div
+                                className="absolute inset-0 rounded-full border-4 border-transparent border-t-teal-500"
+                                animate={{ rotate: 360 }}
+                                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                            />
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <Sparkles className="w-12 h-12 text-teal-500 animate-pulse" />
+                                <motion.div
+                                    animate={{ scale: [1, 1.1, 1] }}
+                                    transition={{ repeat: Infinity, duration: 1.5 }}
+                                >
+                                    <Sparkles className="w-12 h-12 text-teal-500" />
+                                </motion.div>
                             </div>
                         </div>
                         <div>
                             <h2 className="text-2xl font-bold text-foreground mb-2">{t('onboarding.processingTitle')}</h2>
-                            <p className="text-muted-foreground">{t('onboarding.processingDesc')}</p>
+                            <p className="text-muted-foreground mb-6">{t('onboarding.processingDesc')}</p>
+
+                            {/* Animated progress steps */}
+                            <div className="space-y-3 text-left max-w-xs mx-auto">
+                                {processingSteps.map((item, index) => (
+                                    <motion.div
+                                        key={item.id}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: index * 0.8 }}
+                                        className="flex items-center gap-3"
+                                    >
+                                        <motion.div
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{ delay: index * 0.8 + 0.5 }}
+                                            className="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center"
+                                        >
+                                            <Check className="w-3 h-3 text-white" />
+                                        </motion.div>
+                                        <span className="text-sm text-muted-foreground">{item.text}</span>
+                                    </motion.div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 );
@@ -220,12 +261,29 @@ export default function Onboarding() {
 
     return (
         <div className="min-h-screen bg-background pb-safe px-6 overflow-hidden">
-            {/* Progress Bar */}
-            <div className="fixed top-0 left-0 w-full h-1 bg-secondary pointer-events-none z-50">
-                <motion.div
-                    className="h-full bg-teal-500"
-                    animate={{ width: `${((step + 1) / 5) * 100}%` }}
-                />
+            {/* Progress Bar with Step Indicators */}
+            <div className="fixed top-0 left-0 w-full z-50 pointer-events-none">
+                {/* Background bar */}
+                <div className="h-1 bg-secondary">
+                    <motion.div
+                        className="h-full bg-gradient-to-r from-teal-400 to-cyan-400"
+                        animate={{ width: `${((step + 1) / 5) * 100}%` }}
+                        transition={{ duration: 0.3 }}
+                    />
+                </div>
+                {/* Step indicators */}
+                {step > 0 && step < 4 && (
+                    <div className="flex justify-center gap-2 mt-4">
+                        {[1, 2, 3].map((s) => (
+                            <motion.div
+                                key={s}
+                                className={`w-2 h-2 rounded-full transition-colors ${step >= s ? 'bg-teal-500' : 'bg-secondary'
+                                    }`}
+                                animate={{ scale: step === s ? 1.3 : 1 }}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
             <AnimatePresence mode="wait" custom={direction}>
