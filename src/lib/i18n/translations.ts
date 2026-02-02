@@ -192,6 +192,16 @@ export const translations = {
                 desc: "Tüm özelliklere eriş",
             },
         },
+        leaderboard: {
+            title: "Sıralama",
+            weekly: "Haftalık",
+            monthly: "Aylık",
+            allTime: "Tüm Zamanlar",
+            yourStats: "Senin İstatistiklerin",
+            noData: "Henüz sıralama verisi yok",
+            rank: "Sıra",
+            weeklyRank: "Haftalık sıralamada yerini gör",
+        },
         settings: {
             title: "Ayarlar",
             sections: {

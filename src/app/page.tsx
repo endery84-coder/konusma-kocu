@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import {
   Flame, Clock, Target, ChevronRight,
   Wind, BookOpen, Mic, Sliders,
-  Sparkles, TrendingUp
+  Sparkles, TrendingUp, Trophy
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -204,6 +204,24 @@ export default function HomePage() {
               <span className="text-xs text-foreground font-medium">{action.label}</span>
             </motion.button>
           ))}
+        </motion.div>
+
+        {/* Leaderboard Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          onClick={() => router.push('/leaderboard')}
+          className="bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/20 rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:bg-yellow-500/20 transition-colors"
+        >
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center">
+            <Trophy className="w-6 h-6 text-white" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-foreground">{t('leaderboard.title') || 'Sıralama'}</h3>
+            <p className="text-xs text-muted-foreground">{t('leaderboard.weeklyRank') || 'Haftalık sıralamada yerini gör'}</p>
+          </div>
+          <ChevronRight className="w-5 h-5 text-muted-foreground rtl-flip" />
         </motion.div>
 
         {/* Recommended Section */}
