@@ -7,6 +7,7 @@ import { ArrowLeft, Mic, Square, RefreshCcw, BarChart2, MessageSquare, Clock, Al
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
 import { analyzeSpeech, SpeechAnalysisResult } from '@/lib/speechAnalysis';
+import { useConfetti } from '@/hooks/useConfetti';
 
 const LANG_MAP: Record<string, string> = {
     tr: 'tr-TR',
@@ -58,6 +59,8 @@ export default function SpeechAnalysisPage() {
         startListening();
     };
 
+    const { fireConfetti, fireStars } = useConfetti();
+
     const handleStop = () => {
         stopListening();
         // Analyze immediately
@@ -65,6 +68,14 @@ export default function SpeechAnalysisPage() {
         setTimeout(() => {
             const analysis = analyzeSpeech(transcript, elapsedTime, language);
             setResult(analysis);
+
+            // Fire confetti for good scores
+            if (analysis.score >= 70) {
+                setTimeout(fireConfetti, 300);
+                if (analysis.score >= 90) {
+                    setTimeout(fireStars, 800);
+                }
+            }
         }, 500);
     };
 
