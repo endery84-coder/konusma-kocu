@@ -19,6 +19,10 @@ export const translations = {
             hour: "saat",
             microphoneAccessDenied: "Mikrofon erişimi sağlanamadı.",
             microphonePermissionRequired: "Mikrofon izni gerekli.",
+            updateAvailable: "Yeni sürüm mevcut!",
+            update: "Güncelle",
+            offline: "Çevrimdışı",
+            online: "Çevrimiçi",
         },
         nav: {
             home: "Ana Sayfa",

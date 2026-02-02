@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import MobileContainer from "@/components/MobileContainer";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import OfflineBanner from "@/components/OfflineBanner";
+import PWAProvider from "@/components/PWAProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -54,15 +55,17 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <MobileContainer>
-              {children}
-            </MobileContainer>
-            <OfflineBanner />
-            <Toaster
-              position="top-center"
-              richColors
-              closeButton
-            />
+            <PWAProvider>
+              <MobileContainer>
+                {children}
+              </MobileContainer>
+              <OfflineBanner />
+              <Toaster
+                position="top-center"
+                richColors
+                closeButton
+              />
+            </PWAProvider>
           </ThemeProvider>
         </LanguageProvider>
       </body>
