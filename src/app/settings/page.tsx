@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { supabase } from '@/lib/supabase';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { usePushNotifications } from '@/hooks/usePWA';
+import { toast } from 'sonner';
 
 export default function SettingsPage() {
     const router = useRouter();
@@ -22,6 +24,10 @@ export default function SettingsPage() {
     const [soundEffects, setSoundEffects] = useState(true);
     const [vibration, setVibration] = useState(true);
     const [dailyReminder, setDailyReminder] = useState('09:00');
+
+    // Push notifications
+    const { permission, isSupported, requestPermission, sendTestNotification } = usePushNotifications();
+    const notificationsEnabled = permission === 'granted';
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
@@ -59,8 +65,24 @@ export default function SettingsPage() {
                     icon: Bell,
                     label: t('settings.items.notifications'),
                     toggle: true,
-                    value: notifications,
-                    onChange: () => setNotifications(!notifications)
+                    value: notificationsEnabled,
+                    onChange: async () => {
+                        if (!isSupported) {
+                            toast.error(t('settings.notificationsNotSupported') || 'Tarayıcınız bildirimleri desteklemiyor');
+                            return;
+                        }
+                        if (permission === 'denied') {
+                            toast.error(t('settings.notificationsDenied') || 'Bildirim izni reddedildi. Tarayıcı ayarlarından değiştirin.');
+                            return;
+                        }
+                        if (permission !== 'granted') {
+                            const granted = await requestPermission();
+                            if (granted) {
+                                toast.success(t('settings.notificationsEnabled') || 'Bildirimler açıldı! 🔔');
+                                sendTestNotification();
+                            }
+                        }
+                    }
                 },
                 {
                     icon: Volume2,
