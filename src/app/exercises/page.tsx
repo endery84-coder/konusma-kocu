@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { DIFFICULTY_COLORS } from '@/lib/constants';
+import { ExerciseCard } from '@/components/ExerciseCard';
 
 export default function ExercisesPage() {
     const router = useRouter();
@@ -271,55 +272,17 @@ export default function ExercisesPage() {
                     </div>
                 ) : (
                     filteredExercises.map((exercise, index) => (
-                        <motion.button
+                        <ExerciseCard
                             key={exercise.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.03 }}
+                            title={getTranslatedTitle(exercise)}
+                            description={getTranslatedDesc(exercise)}
+                            duration={`${exercise.duration_minutes} ${t('progress.minutes')}`}
+                            difficulty={exercise.difficulty}
+                            isLocked={exercise.is_premium && !isPremium}
+                            icon={<span className="text-2xl">{exercise.icon || '🎯'}</span>}
                             onClick={() => handleExerciseClick(exercise.id)}
-                            className="w-full relative bg-card rounded-2xl p-4 border border-border hover:border-primary/50 hover:shadow-md transition-all text-left"
-                        >
-                            {/* Premium overlay */}
-                            {exercise.is_premium && !isPremium && (
-                                <div className="absolute inset-0 bg-background/60 backdrop-blur-[1px] rounded-2xl flex items-center justify-center z-10">
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-medium rounded-full">
-                                        <Lock className="w-3.5 h-3.5" />
-                                        Premium
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="flex items-center gap-4">
-                                {/* Icon */}
-                                <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
-                                    {exercise.icon || '🎯'}
-                                </div>
-
-                                {/* Content */}
-                                <div className="flex-1 min-w-0">
-                                    <h3 className="font-semibold text-foreground truncate">
-                                        {getTranslatedTitle(exercise)}
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground truncate">
-                                        {getTranslatedDesc(exercise)}
-                                    </p>
-                                    <div className="flex items-center gap-3 mt-1.5">
-                                        <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                            <Clock className="w-3.5 h-3.5" />
-                                            {exercise.duration_minutes} {t('progress.minutes')}
-                                        </span>
-                                        <span className={`text-xs font-medium ${DIFFICULTY_COLORS[exercise.difficulty]}`}>
-                                            {difficultyLabels[exercise.difficulty]}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Play button */}
-                                <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <Play className="w-4 h-4 text-primary" />
-                                </div>
-                            </div>
-                        </motion.button>
+                            index={index}
+                        />
                     ))
                 )}
             </div>

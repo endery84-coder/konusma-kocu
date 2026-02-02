@@ -1,6 +1,7 @@
 import { Play, Lock, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+// import { Button } from "@/components/ui/button" // unused
+import { motion } from "framer-motion"
 
 interface ExerciseCardProps {
     title: string
@@ -11,6 +12,7 @@ interface ExerciseCardProps {
     icon?: React.ReactNode
     color?: string
     onClick?: () => void
+    index?: number // For staggered animation
 }
 
 export function ExerciseCard({
@@ -22,13 +24,19 @@ export function ExerciseCard({
     icon,
     color = "bg-primary/10 text-primary",
     onClick,
+    index = 0,
 }: ExerciseCardProps) {
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
             onClick={isLocked ? undefined : onClick}
             className={cn(
-                "group relative flex items-center space-x-4 rounded-2xl border bg-card p-4 shadow-sm transition-all hover:shadow-md",
-                isLocked ? "opacity-75" : "cursor-pointer hover:border-primary/50"
+                "group relative flex items-center space-x-4 rounded-2xl border bg-card p-4 shadow-sm transition-all hover:shadow-md cursor-pointer",
+                isLocked ? "opacity-75 cursor-not-allowed" : "hover:border-primary/50"
             )}
         >
             {/* Icon Box */}
@@ -72,6 +80,6 @@ export function ExerciseCard({
                     </div>
                 )}
             </div>
-        </div>
+        </motion.div>
     )
 }
