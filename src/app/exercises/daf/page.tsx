@@ -92,7 +92,7 @@ export default function DAFExercisePage() {
             drawVisualizer();
 
         } catch {
-            alert("Mikrofon erişimi sağlanamadı.");
+            alert(t('common.microphoneAccessDenied'));
         }
     };
 

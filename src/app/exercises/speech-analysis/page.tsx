@@ -82,7 +82,7 @@ export default function SpeechAnalysisPage() {
                     <button onClick={() => router.back()} className="p-2 hover:bg-secondary rounded-xl transition-colors">
                         <ArrowLeft className="w-5 h-5 text-foreground rtl-flip" />
                     </button>
-                    <h1 className="text-xl font-bold text-foreground">Konuşma Analizi</h1>
+                    <h1 className="text-xl font-bold text-foreground">{t('exercises.analysis.title')}</h1>
                 </div>
             </div>
 
@@ -92,7 +92,7 @@ export default function SpeechAnalysisPage() {
                     <div className="w-full p-4 bg-red-500/10 text-red-500 rounded-xl flex items-center gap-3">
                         <AlertCircle className="w-5 h-5" />
                         <p className="text-sm font-medium">
-                            {!isSupported ? "Tarayıcınız ses tanımayı desteklemiyor." : "Mikrofon hatası. Lütfen izin verin."}
+                            {!isSupported ? t('exercises.analysis.browserNotSupported') : t('exercises.analysis.microphoneError')}
                         </p>
                     </div>
                 )}
@@ -133,10 +133,10 @@ export default function SpeechAnalysisPage() {
                 <div className="w-full bg-card border border-border rounded-2xl p-6 min-h-[150px] shadow-sm">
                     <h3 className="text-sm font-semibold text-muted-foreground mb-2 flex items-center gap-2">
                         <MessageSquare className="w-4 h-4" />
-                        Canlı Çeviri ({recognitionLang})
+                        {t('exercises.analysis.liveTranscript')} ({recognitionLang})
                     </h3>
                     <p className="text-lg text-foreground leading-relaxed whitespace-pre-wrap">
-                        {transcript || <span className="text-muted-foreground italic opacity-50">Konuşmaya başladığınızda metin burada görünecek...</span>}
+                        {transcript || <span className="text-muted-foreground italic opacity-50">{t('exercises.analysis.transcriptPlaceholder')}</span>}
                     </p>
                 </div>
 
@@ -151,24 +151,24 @@ export default function SpeechAnalysisPage() {
                             <div className="grid grid-cols-2 gap-3 mb-4">
                                 <div className="bg-card p-4 rounded-xl border border-border text-center">
                                     <div className="text-2xl font-bold text-primary">{result.score}</div>
-                                    <div className="text-xs text-muted-foreground">Puan</div>
+                                    <div className="text-xs text-muted-foreground">{t('exercises.analysis.score')}</div>
                                 </div>
                                 <div className="bg-card p-4 rounded-xl border border-border text-center">
                                     <div className="text-2xl font-bold text-blue-500">{result.wpm}</div>
-                                    <div className="text-xs text-muted-foreground">Kelime/Dk (WPM)</div>
+                                    <div className="text-xs text-muted-foreground">{t('exercises.analysis.wpm')}</div>
                                 </div>
                                 <div className="bg-card p-4 rounded-xl border border-border text-center">
                                     <div className="text-2xl font-bold text-orange-500">{result.fillerCount}</div>
-                                    <div className="text-xs text-muted-foreground">Takılma (Eee/Iıı)</div>
+                                    <div className="text-xs text-muted-foreground">{t('exercises.analysis.fillerCount')}</div>
                                 </div>
                                 <div className="bg-card p-4 rounded-xl border border-border text-center">
                                     <div className="text-2xl font-bold text-emerald-500">{result.wordCount}</div>
-                                    <div className="text-xs text-muted-foreground">Toplam Kelime</div>
+                                    <div className="text-xs text-muted-foreground">{t('exercises.analysis.wordCount')}</div>
                                 </div>
                             </div>
 
                             <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-xl border border-primary/20">
-                                <h3 className="font-semibold text-primary mb-1">Yapay Zeka Yorumu</h3>
+                                <h3 className="font-semibold text-primary mb-1">{t('exercises.analysis.aiComment')}</h3>
                                 <p className="text-foreground text-sm">{result.feedback}</p>
                             </div>
                         </motion.div>

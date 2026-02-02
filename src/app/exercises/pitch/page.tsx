@@ -32,7 +32,7 @@ export default function PitchAnalysisPage() {
             setIsAnalyzing(true);
             drawVisualizer();
         } catch {
-            alert("Mikrofon izni gerekli.");
+            alert(t('common.microphonePermissionRequired'));
         }
     };
 

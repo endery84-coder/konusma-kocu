@@ -17,6 +17,8 @@ export const translations = {
             ok: "Tamam",
             user: "Kullanıcı",
             hour: "saat",
+            microphoneAccessDenied: "Mikrofon erişimi sağlanamadı.",
+            microphonePermissionRequired: "Mikrofon izni gerekli.",
         },
         nav: {
             home: "Ana Sayfa",
@@ -81,6 +83,15 @@ export const translations = {
             analysis: {
                 title: "Konuşma Analizi",
                 desc: "Yapay zeka destekli konuşma analizi",
+                browserNotSupported: "Tarayıcınız ses tanımayı desteklemiyor.",
+                microphoneError: "Mikrofon hatası. Lütfen izin verin.",
+                liveTranscript: "Canlı Çeviri",
+                transcriptPlaceholder: "Konuşmaya başladığınızda metin burada görünecek...",
+                score: "Puan",
+                wpm: "Kelime/Dk (WPM)",
+                fillerCount: "Takılma (Eee/Iıı)",
+                wordCount: "Toplam Kelime",
+                aiComment: "Yapay Zeka Yorumu",
             },
             teleprompter: {
                 title: "Sunum Asistanı",
@@ -254,6 +265,8 @@ export const translations = {
             ok: "OK",
             user: "User",
             hour: "hour",
+            microphoneAccessDenied: "Microphone access denied.",
+            microphonePermissionRequired: "Microphone permission required.",
         },
         nav: {
             home: "Home",
@@ -318,6 +331,15 @@ export const translations = {
             analysis: {
                 title: "Speech Analysis",
                 desc: "AI-powered speech analysis",
+                browserNotSupported: "Your browser does not support speech recognition.",
+                microphoneError: "Microphone error. Please grant permission.",
+                liveTranscript: "Live Transcript",
+                transcriptPlaceholder: "Start speaking and text will appear here...",
+                score: "Score",
+                wpm: "Words/Min (WPM)",
+                fillerCount: "Filler Words",
+                wordCount: "Total Words",
+                aiComment: "AI Feedback",
             },
             teleprompter: {
                 title: "Teleprompter",
@@ -522,6 +544,19 @@ export const translations = {
                 ready: "Bist du bereit?",
                 start: "Starten",
                 completed: "Abgeschlossen",
+            },
+            analysis: {
+                title: "Sprachanalyse",
+                desc: "KI-gestützte Sprachanalyse",
+                browserNotSupported: "Ihr Browser unterstützt keine Spracherkennung.",
+                microphoneError: "Mikrofonfehler. Bitte Zugriff erlauben.",
+                liveTranscript: "Live-Transkript",
+                transcriptPlaceholder: "Beginnen Sie zu sprechen und der Text erscheint hier...",
+                score: "Punktzahl",
+                wpm: "Wörter/Min (WPM)",
+                fillerCount: "Füllwörter",
+                wordCount: "Gesamtwörter",
+                aiComment: "KI-Feedback",
             }
         },
         progress: {
