@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { DAF_DEFAULTS } from '@/lib/constants';
 
 interface UseDAFReturn {
     isActive: boolean;
@@ -13,7 +14,7 @@ interface UseDAFReturn {
 
 export function useDAF(): UseDAFReturn {
     const [isActive, setIsActive] = useState(false);
-    const [delayMs, setDelayMs] = useState(100); // Default 100ms delay
+    const [delayMs, setDelayMs] = useState<number>(DAF_DEFAULTS.DEFAULT_DELAY_MS);
     const [error, setError] = useState<string | null>(null);
 
     const audioContextRef = useRef<AudioContext | null>(null);
@@ -53,8 +54,7 @@ export function useDAF(): UseDAFReturn {
             delayNode.connect(audioContext.destination);
 
             setIsActive(true);
-        } catch (err: any) {
-            console.error('DAF error:', err);
+        } catch {
             setError('DAF başlatılamadı. Mikrofon izni gerekli.');
         }
     }, [delayMs]);

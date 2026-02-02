@@ -40,8 +40,8 @@ export function usePremium(): UsePremiumReturn {
                 setPlan(profile.premium_plan);
                 setExpiresAt(profile.premium_expires_at ? new Date(profile.premium_expires_at) : null);
             }
-        } catch (error) {
-            console.error('Premium check error:', error);
+        } catch {
+            // Premium check error handled silently
         } finally {
             setLoading(false);
         }

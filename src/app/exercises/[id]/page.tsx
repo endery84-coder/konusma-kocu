@@ -8,9 +8,7 @@ import {
 } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-
-const difficultyLabels = ['', 'Kolay', 'Orta', 'Zor', 'Uzman'];
-const difficultyColors = ['', 'text-emerald-500', 'text-amber-500', 'text-orange-500', 'text-red-500'];
+import { DIFFICULTY_LABELS, DIFFICULTY_COLORS } from '@/lib/constants';
 
 export default function ExerciseDetailPage() {
     const router = useRouter();
@@ -47,14 +45,13 @@ export default function ExerciseDetailPage() {
                     .single();
 
                 if (error) {
-                    console.error('Exercise fetch error:', error);
                     return;
                 }
 
-                console.log('Fetched exercise:', data); // Debug
+
                 setExercise(data);
-            } catch (error) {
-                console.error('Error:', error);
+            } catch {
+                // Error handled silently
             } finally {
                 setLoading(false);
             }
@@ -112,8 +109,8 @@ export default function ExerciseDetailPage() {
                 .eq('id', userId);
 
             router.push('/exercises?completed=true');
-        } catch (error) {
-            console.error('Error saving progress:', error);
+        } catch {
+            // Error handled silently
         }
     };
 
@@ -185,8 +182,8 @@ export default function ExerciseDetailPage() {
                     </div>
                     <div className="bg-card rounded-xl p-3 text-center border border-border">
                         <Target className="w-5 h-5 text-teal-500 mx-auto mb-1" />
-                        <p className={`text-sm font-semibold ${difficultyColors[exercise.difficulty]}`}>
-                            {difficultyLabels[exercise.difficulty]}
+                        <p className={`text-sm font-semibold ${DIFFICULTY_COLORS[exercise.difficulty]}`}>
+                            {DIFFICULTY_LABELS[exercise.difficulty]}
                         </p>
                         <p className="text-xs text-muted-foreground">Zorluk</p>
                     </div>

@@ -31,8 +31,7 @@ export default function PitchAnalysisPage() {
 
             setIsAnalyzing(true);
             drawVisualizer();
-        } catch (err) {
-            console.error("Mic error:", err);
+        } catch {
             alert("Mikrofon izni gerekli.");
         }
     };

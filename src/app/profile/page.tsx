@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Settings, Crown, Flame, Clock, Trophy, ChevronRight, Camera } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import BottomNav from '@/components/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function ProfilePage() {
@@ -52,8 +51,8 @@ export default function ProfilePage() {
                     completedExercises: exerciseCount || 0,
                     badges: badgeCount || 0,
                 });
-            } catch (error) {
-                console.error('Error fetching user:', error);
+            } catch {
+                // Error handled silently
             } finally {
                 setLoading(false);
             }

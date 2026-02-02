@@ -91,8 +91,7 @@ export default function DAFExercisePage() {
             setIsActive(true);
             drawVisualizer();
 
-        } catch (err) {
-            console.error("Audio Start Error:", err);
+        } catch {
             alert("Mikrofon erişimi sağlanamadı.");
         }
     };

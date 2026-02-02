@@ -10,7 +10,6 @@ import dynamic from 'next/dynamic';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { supabase } from '@/lib/supabase';
 import { badges } from '@/lib/data/badges';
-import BottomNav from '@/components/BottomNav';
 import { useBadgeSystem } from '@/hooks/useBadgeSystem';
 
 const WeeklyActivityChart = dynamic(() => import('@/components/WeeklyActivityChart'), { ssr: false });
@@ -74,8 +73,8 @@ export default function ProfilePage() {
                     firstName: profile?.full_name?.split(' ')[0] || t('common.user'),
                     joinDate: new Date(profile?.created_at || Date.now()).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', { month: 'long', year: 'numeric' })
                 });
-            } catch (error) {
-                console.error(error);
+            } catch {
+                // Error handled silently
             } finally {
                 setLoading(false);
             }

@@ -10,7 +10,6 @@ import {
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { supabase } from '@/lib/supabase';
-import BottomNav from '@/components/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function SettingsPage() {

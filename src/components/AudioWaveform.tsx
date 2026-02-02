@@ -97,8 +97,8 @@ export default function AudioWaveform({ isRecording, className = '' }: AudioWave
                 };
 
                 draw();
-            } catch (err) {
-                console.error('Waveform error:', err);
+            } catch {
+                // Waveform error handled silently
             }
         };
 

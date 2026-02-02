@@ -9,10 +9,10 @@ import {
   Sparkles, TrendingUp
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import BottomNav from '@/components/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { dailyQuotes } from '@/lib/data/quotes';
 import { toast } from 'sonner';
+import { TIME_THRESHOLDS } from '@/lib/constants';
 
 export default function HomePage() {
   const router = useRouter();
@@ -25,8 +25,8 @@ export default function HomePage() {
   useEffect(() => {
     // Selamlama mesajı
     const hour = new Date().getHours();
-    if (hour < 12) setGreeting('morning');
-    else if (hour < 18) setGreeting('afternoon');
+    if (hour < TIME_THRESHOLDS.MORNING_END) setGreeting('morning');
+    else if (hour < TIME_THRESHOLDS.AFTERNOON_END) setGreeting('afternoon');
     else setGreeting('evening');
 
     // Günlük alıntı (Dil bazlı)
@@ -98,8 +98,8 @@ export default function HomePage() {
             }
           }
         }
-      } catch (error) {
-        console.error('Error:', error);
+      } catch {
+        // Error handled silently
       } finally {
         setLoading(false);
       }

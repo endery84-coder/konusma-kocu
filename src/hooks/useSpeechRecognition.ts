@@ -40,7 +40,6 @@ export function useSpeechRecognition(lang: string = 'tr-TR'): UseSpeechRecogniti
                 };
 
                 recognition.onerror = (event: any) => {
-                    console.error('Speech recognition error', event.error);
                     setError(event.error);
                     setIsListening(false);
                 };
@@ -79,8 +78,8 @@ export function useSpeechRecognition(lang: string = 'tr-TR'): UseSpeechRecogniti
         if (recognitionRef.current && !isListening) {
             try {
                 recognitionRef.current.start();
-            } catch (e) {
-                console.error("Start error:", e);
+            } catch {
+                // Start error handled silently
             }
         }
     }, [isListening]);

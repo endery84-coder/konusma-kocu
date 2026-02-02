@@ -85,8 +85,8 @@ export default function Onboarding() {
                         daily_goal_minutes: parseInt(selection[3])
                     });
                 }
-            } catch (e) {
-                console.error(e);
+            } catch {
+                // Error handled silently
             }
             router.push('/');
         }, 3000);

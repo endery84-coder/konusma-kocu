@@ -75,7 +75,6 @@ export function useAudioRecorder(): UseAudioRecorderReturn {
             }, 1000);
 
         } catch (err: any) {
-            console.error('Recording error:', err);
             if (err.name === 'NotAllowedError') {
                 setError('Mikrofon izni verilmedi. Lütfen tarayıcı ayarlarından izin verin.');
             } else if (err.name === 'NotFoundError') {

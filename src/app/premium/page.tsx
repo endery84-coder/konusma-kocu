@@ -71,8 +71,8 @@ export default function PremiumPage() {
                 router.push('/');
             }, 3000);
 
-        } catch (error) {
-            console.error('Payment error:', error);
+        } catch {
+            // Payment error handled silently
         } finally {
             setIsLoading(false);
         }
@@ -155,8 +155,8 @@ export default function PremiumPage() {
                             key={plan.id}
                             onClick={() => setSelectedPlan(plan.id)}
                             className={`relative p-4 rounded-2xl border-2 transition-all ${selectedPlan === plan.id
-                                    ? 'border-primary bg-primary/5'
-                                    : 'border-border bg-card'
+                                ? 'border-primary bg-primary/5'
+                                : 'border-border bg-card'
                                 }`}
                         >
                             {plan.popular && (

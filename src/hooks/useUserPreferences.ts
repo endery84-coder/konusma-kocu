@@ -23,14 +23,14 @@ export function useUserPreferences(userId?: string) {
                     .single()
 
                 if (error && error.code !== 'PGRST116') { // PGRST116 is no rows found
-                    console.error('Error fetching preferences:', error)
+                    // Error handled silently
                 }
 
                 if (data) {
                     setPreferences(data)
                 }
-            } catch (e) {
-                console.error('Unexpected error:', e)
+            } catch {
+                // Unexpected error handled silently
             } finally {
                 setLoading(false)
             }

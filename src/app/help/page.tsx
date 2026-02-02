@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Search, ChevronDown, Mail, MessageCircle, Phone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import BottomNav from '@/components/BottomNav';
 
 const faqs = [
     {

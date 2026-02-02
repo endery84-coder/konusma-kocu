@@ -5,8 +5,8 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Search, Lock, Play, Clock, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import BottomNav from '@/components/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { DIFFICULTY_COLORS } from '@/lib/constants';
 
 export default function ExercisesPage() {
     const router = useRouter();
@@ -29,7 +29,6 @@ export default function ExercisesPage() {
     ];
 
     const difficultyLabels = ['', t('exercises.difficulty.easy'), t('exercises.difficulty.medium'), t('exercises.difficulty.hard'), t('exercises.difficulty.expert')];
-    const difficultyColors = ['', 'text-emerald-500', 'text-amber-500', 'text-orange-500', 'text-red-500'];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,7 +51,6 @@ export default function ExercisesPage() {
                     .order('difficulty', { ascending: true });
 
                 if (error) {
-                    console.error('Exercises fetch error:', error);
                     return;
                 }
 
@@ -137,8 +135,8 @@ export default function ExercisesPage() {
                 setExercises(allExercises);
                 setFilteredExercises(allExercises);
 
-            } catch (error) {
-                console.error('Error:', error);
+            } catch {
+                // Error handled silently
             } finally {
                 setLoading(false);
             }
@@ -310,7 +308,7 @@ export default function ExercisesPage() {
                                             <Clock className="w-3.5 h-3.5" />
                                             {exercise.duration_minutes} {t('progress.minutes')}
                                         </span>
-                                        <span className={`text-xs font-medium ${difficultyColors[exercise.difficulty]}`}>
+                                        <span className={`text-xs font-medium ${DIFFICULTY_COLORS[exercise.difficulty]}`}>
                                             {difficultyLabels[exercise.difficulty]}
                                         </span>
                                     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { METRONOME_DEFAULTS } from '@/lib/constants';
 
 interface UseMetronomeReturn {
     isPlaying: boolean;
@@ -13,7 +14,7 @@ interface UseMetronomeReturn {
 
 export function useMetronome(): UseMetronomeReturn {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [bpm, setBpm] = useState(60);
+    const [bpm, setBpm] = useState<number>(METRONOME_DEFAULTS.DEFAULT_BPM);
     const [currentBeat, setCurrentBeat] = useState(0);
 
     const audioContextRef = useRef<AudioContext | null>(null);
@@ -33,7 +34,7 @@ export function useMetronome(): UseMetronomeReturn {
         gainNode.connect(ctx.destination);
 
         // Click sound
-        oscillator.frequency.value = beatCountRef.current % 4 === 0 ? 1000 : 800;
+        oscillator.frequency.value = beatCountRef.current % METRONOME_DEFAULTS.BEATS_PER_MEASURE === 0 ? 1000 : 800;
         oscillator.type = 'sine';
 
         gainNode.gain.setValueAtTime(0.5, ctx.currentTime);
@@ -43,7 +44,7 @@ export function useMetronome(): UseMetronomeReturn {
         oscillator.stop(ctx.currentTime + 0.1);
 
         beatCountRef.current++;
-        setCurrentBeat(beatCountRef.current % 4);
+        setCurrentBeat(beatCountRef.current % METRONOME_DEFAULTS.BEATS_PER_MEASURE);
     }, []);
 
     const start = useCallback(() => {
