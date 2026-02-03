@@ -8,6 +8,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
 import { analyzeSpeech, SpeechAnalysisResult } from '@/lib/speechAnalysis';
 import { useConfetti } from '@/hooks/useConfetti';
+import { useExerciseCompletion } from '@/hooks/useExerciseCompletion';
 
 const LANG_MAP: Record<string, string> = {
     tr: 'tr-TR',
@@ -60,6 +61,7 @@ export default function SpeechAnalysisPage() {
     };
 
     const { fireConfetti, fireStars } = useConfetti();
+    const { completeExercise } = useExerciseCompletion();
 
     const handleStop = () => {
         stopListening();
@@ -76,6 +78,14 @@ export default function SpeechAnalysisPage() {
                     setTimeout(fireStars, 800);
                 }
             }
+
+            // Track completion
+            completeExercise({
+                exerciseType: 'speech-analysis',
+                durationMinutes: Math.round(elapsedTime / 60) || 1,
+                score: analysis.score,
+                xpEarned: 35 + Math.floor(analysis.score / 5),
+            });
         }, 500);
     };
 

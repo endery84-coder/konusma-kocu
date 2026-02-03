@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import { TIME_THRESHOLDS } from '@/lib/constants';
 import { DailyTasksWidget } from '@/components/DailyTasksWidget';
 import { LevelProgress } from '@/components/LevelProgress';
+import { StreakIndicator } from '@/components/StreakFreeze';
 
 export default function HomePage() {
   const router = useRouter();
@@ -141,11 +142,9 @@ export default function HomePage() {
           </div>
           <motion.div
             whileTap={{ scale: 0.95 }}
-            onClick={() => router.push('/progress')}
-            className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl cursor-pointer"
+            className="bg-white/20 backdrop-blur-sm rounded-xl cursor-pointer"
           >
-            <Flame className="w-5 h-5 text-orange-300" />
-            <span className="text-white font-bold">{streakDays}</span>
+            <StreakIndicator />
           </motion.div>
         </div>
 
@@ -324,6 +323,6 @@ export default function HomePage() {
       </div>
 
 
-    </div>
+    </div >
   );
 }

@@ -7,6 +7,8 @@ import { ArrowLeft, Mic, Play, RotateCcw, Volume2 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { vocabularyWords } from '@/lib/data/vocabulary';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
+import { useExerciseCompletion } from '@/hooks/useExerciseCompletion';
+import { useConfetti } from '@/hooks/useConfetti';
 
 const LANG_MAP: Record<string, string> = {
     tr: 'tr-TR',
@@ -31,6 +33,9 @@ export default function VocabularyCoachPage() {
 
     const recognitionLang = LANG_MAP[language] || 'en-US';
     const { isListening, transcript, startListening, stopListening, resetTranscript } = useSpeechRecognition(recognitionLang);
+
+    const { completeExercise } = useExerciseCompletion();
+    const { fireConfetti, fireStars } = useConfetti();
 
     useEffect(() => {
         // Load words for current lang & level
@@ -75,7 +80,23 @@ export default function VocabularyCoachPage() {
             setCurrentWordIndex(prev => prev + 1);
         } else {
             setFeedback("coaching_complete");
+            handleComplete();
         }
+    };
+
+    const handleComplete = async () => {
+        const accuracy = Math.round((score / (words.length * 10)) * 100);
+
+        fireConfetti();
+        if (accuracy >= 80) {
+            setTimeout(fireStars, 300);
+        }
+
+        await completeExercise({
+            exerciseType: 'vocabulary',
+            score: accuracy,
+            xpEarned: 25 + Math.floor(score / 2),
+        });
     };
 
     const playPronunciation = () => {
