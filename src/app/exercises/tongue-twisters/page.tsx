@@ -7,6 +7,8 @@ import { ArrowLeft, Mic, RefreshCw, Trophy, AlertCircle, CheckCircle2, ChevronRi
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { tongueTwisters } from '@/lib/data/tongueTwisters';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
+import { useExerciseCompletion } from '@/hooks/useExerciseCompletion';
+import { useConfetti } from '@/hooks/useConfetti';
 
 const LANG_MAP: Record<string, string> = {
     tr: 'tr-TR',
@@ -29,6 +31,9 @@ export default function TongueTwistersPage() {
     const [score, setScore] = useState<number | null>(null);
     const recognitionLang = LANG_MAP[language] || 'en-US';
     const { isListening, transcript, startListening, stopListening, resetTranscript, isSupported } = useSpeechRecognition(recognitionLang);
+
+    const { completeExercise } = useExerciseCompletion();
+    const { fireConfetti, fireStars } = useConfetti();
 
     // Initialize random twister
     useEffect(() => {
@@ -74,6 +79,19 @@ export default function TongueTwistersPage() {
             // Cap at 100
             const accuracy = Math.min(100, Math.round((matchCount / targetWords.length) * 100));
             setScore(accuracy);
+
+            // Track completion
+            if (accuracy >= 50) {
+                fireConfetti();
+                if (accuracy >= 90) {
+                    setTimeout(fireStars, 300);
+                }
+                completeExercise({
+                    exerciseType: 'tongue-twisters',
+                    score: accuracy,
+                    xpEarned: 20 + Math.floor(accuracy / 10), // Bonus for higher scores
+                });
+            }
         }, 500);
     };
 

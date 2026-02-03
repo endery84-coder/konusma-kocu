@@ -1,9 +1,12 @@
 ---
+description: Naming conventions (single source of truth)
 trigger: always_on
 ---
-# İsimlendirme Standartları
 
-1. **Dosyalar:** kebab-case kullan (örn: `user-profile.tsx`).
-2. **Değişkenler:** camelCase kullan (örn: `isUserLoggedIn`).
-3. **Componentler/Sınıflar:** PascalCase kullan (örn: `UserProfile`).
-4. **Booleanlar:** `is`, `has`, `should` ile başla (örn: `isVisible`).
+# 🏷️ Naming Conventions
+
+- **Files:** `kebab-case` (e.g., `user-profile.tsx`)
+- **Variables / functions:** `camelCase` (e.g., `getUserProfile`)
+- **Components / classes / types:** `PascalCase` (e.g., `UserProfile`)
+- **Booleans:** start with `is/has/should/can` (e.g., `isLoading`, `hasAccess`)
+- **Constants/enums:** `SCREAMING_SNAKE_CASE` when appropriate

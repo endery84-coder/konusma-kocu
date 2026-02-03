@@ -1,8 +1,10 @@
 ---
-trigger: project_wrap_up OR readme_update
+trigger: always_on
 ---
-# Proje Teslim & Dokümantasyon
 
-1. **README.md:** Proje ne işe yarar, nasıl kurulur (`npm install`), ortam değişkenleri (.env) nelerdir? Bunları güncelle.
-2. **TODO Taraması:** Kod içindeki `// TODO:` yorumlarını tara ve bunları raporla veya tamamlamayı teklif et.
-3. **Change Log:** Yapılan son değişiklikleri maddeler halinde özetle.
+# 🧹 Chore Manager
+
+- Scan for `// TODO:` and report them (don’t silently ignore).
+- Detect unused files/exports if tooling exists.
+- If updating deps is requested: follow existing lockfile + run tests.
+- Keep changes minimal and mechanical (no refactors during chores).

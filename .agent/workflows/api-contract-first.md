@@ -1,8 +1,24 @@
 ---
 trigger: api_integration OR fetch_request
 ---
-# API Entegrasyon Kuralı
 
-1. **Mock Data:** Eğer gerçek API hazır değilse, önce TypeScript interface'ini veya JSON şemasını tanımla.
-2. **Error Handling:** Her API isteği mutlaka `try-catch` içinde olmalı ve kullanıcıya "dostane" bir hata mesajı dönmeli (bkz: error-mesaji.md).
-3. **Loading States:** İstek atılırken UI'da mutlaka bir `isLoading` durumu yönetilmeli.
+# 🔌 API Contract-First Workflow
+
+1) **Define contract first**
+- TypeScript interface / schema for request + response
+- Prefer existing repo conventions for API clients
+
+2) **Error schema (recommended)**
+- Normalize errors to something like:
+  - `code`, `message`, `details?`, `traceId?`
+
+3) **Error handling**
+- Every request in `try/catch`
+- Friendly user message + internal log
+
+4) **Loading states**
+- UI must manage `isLoading`
+- Handle empty / retry scenario if relevant
+
+5) **No mock drift**
+- If API not ready: mock data must match the contract exactly

@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Mic, StopCircle, Sliders, Volume2, Info, Ear } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useExerciseCompletion } from '@/hooks/useExerciseCompletion';
+import { useConfetti } from '@/hooks/useConfetti';
 
 export default function DAFExercisePage() {
     const router = useRouter();
@@ -29,6 +31,10 @@ export default function DAFExercisePage() {
 
     // Settings Panel
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [startTime, setStartTime] = useState<number>(0);
+
+    const { completeExercise } = useExerciseCompletion();
+    const { fireConfetti } = useConfetti();
 
     // Initialize/Cleanup Audio
     useEffect(() => {
@@ -89,6 +95,7 @@ export default function DAFExercisePage() {
             sourceRef.current.connect(analyserRef.current);
 
             setIsActive(true);
+            setStartTime(Date.now());
             drawVisualizer();
 
         } catch {
@@ -96,7 +103,9 @@ export default function DAFExercisePage() {
         }
     };
 
-    const stopAudio = () => {
+    const stopAudio = async () => {
+        const durationMinutes = Math.round((Date.now() - startTime) / 60000) || 1;
+
         if (audioContextRef.current) {
             audioContextRef.current.close();
             audioContextRef.current = null;
@@ -105,6 +114,16 @@ export default function DAFExercisePage() {
             cancelAnimationFrame(rafRef.current);
         }
         setIsActive(false);
+
+        // Track completion if used for more than 30 seconds
+        if (Date.now() - startTime > 30000) {
+            fireConfetti();
+            await completeExercise({
+                exerciseType: 'daf',
+                durationMinutes,
+                xpEarned: 30 + (durationMinutes * 5), // Bonus for longer usage
+            });
+        }
     };
 
     const toggleDAF = () => {

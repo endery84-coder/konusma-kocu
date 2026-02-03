@@ -5,8 +5,16 @@ trigger: pre_commit OR git_status
 
 # 🕵️ Change Manager
 
-1. **Audit:** Run linting and type-checking on changed files.
-2. **Optimize:** Remove unused imports, format code.
-3. **Commit Prep:**
-   - Write a "Conventional Commit" message (e.g., `feat: add login`).
-   - 🛑 **WAIT** for user confirmation before pushing code.
+1) **Audit**
+- Run lint + typecheck on changed scope (project scripts)
+- Run tests relevant to changed code
+
+2) **Optimize**
+- Remove unused imports
+- Format code (project formatter)
+
+3) **Commit prep**
+- Propose a Conventional Commit message: `feat: ...`, `fix: ...`, `refactor: ...`
+
+4) **Push safety**
+- WAIT for user confirmation before pushing.

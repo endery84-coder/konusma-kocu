@@ -1,8 +1,20 @@
 ---
+description: Documentation rules
 trigger: always_on
 ---
-# Dokümantasyon Kuralları
 
-1. **Fonksiyonlar:** Her dışa açılan (exported) fonksiyonun üzerinde ne işe yaradığını, parametrelerini ve dönüş değerini açıklayan bir JSDoc/Docstring bloğu olmalı.
-2. **Karmaşıklık:** Eğer bir kod bloğu karmaşıksa, mantığını açıklayan satır içi (inline) yorumlar ekle.
-3. **Dil:** Proje dili İngilizce ise yorumlar İngilizce, Türkçe ise Türkçe olmalı (Karıştırma).
+# 📚 Documentation Standards
+
+1) **Exported functions**
+- Every exported function/class must have JSDoc/Docstring:
+  - what it does
+  - params
+  - return value
+  - important side effects (if any)
+
+2) **Complexity**
+- If logic is hard to read, add minimal inline comments explaining intent.
+
+3) **Language**
+- Do not mix languages in the same file.
+- Use project language detected by `core/context-loader.md`.

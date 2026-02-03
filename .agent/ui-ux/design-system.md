@@ -5,8 +5,14 @@ trigger: ui_generation
 
 # 🎨 UI & Design System
 
-1. **Source of Truth:** Check for `theme.md`, `design-tokens.ts`, or Tailwind config.
-2. **Compliance:**
-   - Use defined colors/spacing strictly. NO arbitrary HEX codes.
-   - Re-use existing UI components (Buttons, Cards) instead of creating new ones.
-3. **Fallback:** If no theme exists, match the style of existing pages.
+1) **Source of truth**
+- Check: `theme.md`, `design-tokens.*`, Tailwind config, existing components.
+
+2) **Compliance**
+- No arbitrary HEX / spacing values if tokens exist.
+- Reuse existing UI components (Button/Card/Input) before creating new.
+
+3) **UX basics**
+- Loading state required
+- Empty state required when applicable
+- Error state required (friendly message)

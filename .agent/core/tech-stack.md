@@ -5,8 +5,16 @@ trigger: always_on
 
 # 🧠 Tech Stack Awareness
 
-1. **Discovery:** Always read `package.json`, `go.mod`, or `requirements.txt` first.
-2. **Consistency:**
-   - Do NOT introduce new libraries if an existing one does the job.
-   - Use the syntax version matching the project (e.g., React 18 vs 16).
-3. **Forbidden:** Do not use deprecated APIs or generic placeholders.
+1) **Discovery**
+- Always read: `package.json` (or `go.mod` / `requirements.txt`) first.
+- Match versions + existing patterns (React 18 vs 16, router choice, state lib, etc.)
+
+2) **Consistency**
+- Do NOT introduce a new library if an existing one already solves it.
+- Prefer project’s established primitives (fetch/axios, form lib, logger, test runner).
+
+3) **No deprecated APIs**
+- Avoid deprecated framework APIs and old patterns already replaced in repo.
+
+4) **If a new dependency is unavoidable**
+- Provide: why needed + alternative you rejected + impact (bundle/perf/ops).

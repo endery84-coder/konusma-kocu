@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Play, Pause, Settings2, RotateCcw, Type, Monitor } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useExerciseCompletion } from '@/hooks/useExerciseCompletion';
+import { useConfetti } from '@/hooks/useConfetti';
 
 export default function TeleprompterPage() {
     const router = useRouter();
@@ -20,6 +22,10 @@ export default function TeleprompterPage() {
 
     const scrollerRef = useRef<HTMLDivElement>(null);
     const rafRef = useRef<number | null>(null);
+    const [startTime, setStartTime] = useState<number>(0);
+
+    const { completeExercise } = useExerciseCompletion();
+    const { fireConfetti } = useConfetti();
 
     // Scroll Logic
     useEffect(() => {
@@ -31,6 +37,7 @@ export default function TeleprompterPage() {
             // Check if reached end
             if (scrollerRef.current.scrollTop + scrollerRef.current.clientHeight >= scrollerRef.current.scrollHeight - 10) {
                 setIsPlaying(false);
+                handleComplete();
             } else {
                 rafRef.current = requestAnimationFrame(scroll);
             }
@@ -47,11 +54,29 @@ export default function TeleprompterPage() {
         };
     }, [isPlaying, speed]);
 
+    const handleComplete = async () => {
+        const durationMinutes = Math.round((Date.now() - startTime) / 60000) || 1;
+        fireConfetti();
+        await completeExercise({
+            exerciseType: 'teleprompter',
+            durationMinutes,
+            xpEarned: 35 + (text.split(' ').length / 5), // Bonus for longer texts
+        });
+    };
+
     const handleRestart = () => {
         setIsPlaying(false);
+        setStartTime(0);
         if (scrollerRef.current) {
             scrollerRef.current.scrollTop = 0;
         }
+    };
+
+    const handleTogglePlay = () => {
+        if (!isPlaying && startTime === 0) {
+            setStartTime(Date.now());
+        }
+        setIsPlaying(!isPlaying);
     };
 
     return (
@@ -107,7 +132,7 @@ export default function TeleprompterPage() {
                 </button>
 
                 <button
-                    onClick={() => setIsPlaying(!isPlaying)}
+                    onClick={handleTogglePlay}
                     className="p-6 bg-cyan-500 rounded-full shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:scale-105 active:scale-95 transition-all"
                 >
                     {isPlaying ? (

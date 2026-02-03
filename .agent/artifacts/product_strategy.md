@@ -1,6 +1,6 @@
 # 🎯 KonuşKoç - Ürün Stratejisi & Yol Haritası
 
-## 📊 Mevcut Durum Analizi
+## 📊 Mevcut Durum Analizi (Güncellenmiş: 2026-02-03 10:40)
 
 ### ✅ Tamamlanan Özellikler
 - Çok dilli destek (TR, EN, DE, ES) 
@@ -13,10 +13,15 @@
 - Pitch/Ton Analizi
 - Kelime Hazinesi
 - Ses Kayıt
-- Leaderboard/Sıralama
-- PWA & Offline destek
-- Konfeti kutlamaları
-- Onboarding flow
+- Leaderboard/Sıralama ✅
+- PWA & Offline destek ✅
+- Konfeti kutlamaları ✅
+- Onboarding flow ✅
+- **Günlük Görev Sistemi ✅**
+- **Başarı/Rozet Sistemi ✅**
+- **Achievements Sayfası ✅**
+- **Premium Paywall Altyapısı ✅**
+- **useExerciseCompletion Hook ✅**
 
 ---
 
@@ -28,10 +33,10 @@ Sabah Bildirimi → Günlük Hedef → Egzersiz → XP/Streak → Ödül
 ```
 
 **Kritik Özellikler:**
-- [ ] **Günlük Görev Sistemi** - Her gün 3 mini görev
+- [x] **Günlük Görev Sistemi** - Her gün 3 mini görev ✅
 - [ ] **Streak Koruma Öğesi** - "Streak Freeze" (Premium'da 2 hak)
 - [ ] **Günün Konuşma Konusu** - AI önerili konuşma pratiği
-- [ ] **Progress Ring** - Ana ekranda günlük ilerleme halkası
+- [x] **Progress Ring** - Ana ekranda günlük ilerleme halkası ✅
 
 ### 2️⃣ Haftalık Döngü (Weekly Loop)
 - [ ] **Haftalık Özet E-postası** - İlerleme raporu
@@ -39,7 +44,7 @@ Sabah Bildirimi → Günlük Hedef → Egzersiz → XP/Streak → Ödül
 - [ ] **Yeni İçerik** - Haftalık yeni tongue twisters/metinler
 
 ### 3️⃣ Sosyal Öğeler
-- [ ] **Başarı Rozetleri** - 15+ rozet
+- [x] **Başarı Rozetleri** - 15+ rozet ✅
 - [ ] **Profil Paylaşımı** - İlerleme kartı oluştur & paylaş
 - [ ] **Arkadaş Daveti** - Referral sistemi (+50 XP)
 
@@ -84,101 +89,81 @@ Sabah Bildirimi → Günlük Hedef → Egzersiz → XP/Streak → Ödül
 | 🇪🇺 Avrupa | €4.49 | €32.99 (39% off) | 7 gün |
 | 🇩🇪 Almanya | €4.99 | €34.99 (42% off) | 7 gün |
 
-### Ek Gelir Kanalları
-1. **Tek seferlik içerik** - Premium egzersiz paketleri (₺29.99)
-2. **Terapi Kurumu Lisansı** - B2B (aylık ₺499+)
-3. **White Label** - Hastaneler için özelleştirilmiş versiyon
+---
+
+## 📱 SIRADAKİ İŞLEMLER (Öncelik Sırası)
+
+### 🔴 Bugün Yapılacak
+1. ~~Günlük Görev Sistemi~~ ✅
+2. ~~Başarı/Rozet Sistemi~~ ✅  
+3. ~~Premium Paywall Altyapısı~~ ✅
+4. **Diğer egzersizlere useExerciseCompletion entegre et** ⏳
+5. **Seviye Sistemi görselleştirme** ⏳
+
+### 🟡 Yakın Gelecek
+6. Storage bucket (recordings) oluştur
+7. Stripe/RevenueCat ödeme entegrasyonu
+8. Push notification sistemi (OneSignal)
+9. Streak Freeze mekanizması
+
+### 🟢 Sonra
+10. AI Konuşma Koçu chat interface
+11. Haftalık özet e-postası
+12. Profil paylaşım kartı
+13. Referral sistemi
 
 ---
 
-## 🌍 PAZAR & DİL STRATEJİSİ
+## 🛠️ TEKNİK DURUM
 
-### Öncelik Sırası
+### Supabase Tabloları
+| Tablo | Durum |
+|-------|-------|
+| users | ✅ Mevcut |
+| user_progress | ✅ Mevcut |
+| recordings | ✅ Oluşturuldu |
+| user_stats | ✅ Oluşturuldu |
+| achievements | ✅ Oluşturuldu + Seed |
+| user_achievements | ✅ Oluşturuldu |
+| daily_task_templates | ✅ Oluşturuldu + Seed |
+| user_daily_tasks | ✅ Oluşturuldu |
+| subscriptions | ✅ Oluşturuldu |
+| daily_usage | ✅ Oluşturuldu |
 
-| # | Pazar | Neden | Lansman |
-|---|-------|-------|---------|
-| 1 | 🇹🇷 Türkiye | Ana pazar, test | Şimdi |
-| 2 | 🇩🇪 Almanya | Türk diaspora + Almanca | Ay 2 |
-| 3 | 🇺🇸 ABD | En büyük SLP market | Ay 3 |
-| 4 | 🇬🇧 İngiltere | İngilizce, NHS ortaklık | Ay 4 |
-| 5 | 🇸🇦 Arap dünyası | Düşük rekabet | Ay 5 |
+### Storage
+| Bucket | Durum |
+|--------|-------|
+| avatars | ✅ Mevcut |
+| recordings | ⏳ Manuel oluşturulacak |
 
-### Dil Öncelikleri
-```
-✅ Türkçe (tr) - Hazır
-✅ İngilizce (en) - Hazır  
-✅ Almanca (de) - Hazır
-⏳ İspanyolca (es) - Kısmi
-🔜 Arapça (ar) - Planlı (RTL gerekli)
-🔜 Farsça (fa) - Planlı (RTL gerekli)
-```
-
----
-
-## 📱 BUGÜN GELİŞTİRİLECEKLER (Öncelik Sırası)
-
-### 🔴 Kritik (Bugün)
-1. **Günlük Görev Sistemi** - 3 görev + ödül
-2. **Premium Paywall** - Limit kontrolü + satın alma ekranı
-3. **Başarı Rozetleri** - 10 temel rozet
-
-### 🟡 Önemli (Bugün/Yarın)
-4. **Seviye Sistemi** - XP → Seviye dönüşümü
-5. **AI Konuşma Koçu** - Basit chat interface
-6. **Streak Freeze mekanizması**
-
-### 🟢 Nice-to-have
-7. **Haftalık özet e-postası**
-8. **Profil paylaşım kartı**
-9. **Referral sistemi**
+### Hooks
+| Hook | Durum |
+|------|-------|
+| useConfetti | ✅ |
+| useLeaderboard | ✅ |
+| useDailyTasks | ✅ |
+| useAchievements | ✅ |
+| useSubscription | ✅ |
+| useExerciseCompletion | ✅ |
+| useRecordings | ✅ |
+| usePWA | ✅ |
 
 ---
 
-## 🛠️ TEKNİK GEREKSİNİMLER
+## 📈 GÜNCEL METRİKLER
 
-### Yeni Tablolar (Supabase)
-- `daily_tasks` - Günlük görevler
-- `user_achievements` - Kazanılan rozetler
-- `achievements` - Rozet tanımları
-- `subscriptions` - Premium abonelikler
-- `purchase_history` - Satın alma geçmişi
-
-### Entegrasyonlar
-- **RevenueCat** veya **Stripe** - Ödeme
-- **OneSignal** - Push notifikasyon
-- **Mixpanel/Amplitude** - Analytics
-- **Sentry** - Error tracking
+- **Toplam Route/Sayfa:** 27
+- **Toplam Hook:** 8+
+- **Database Tabloları:** 10+
+- **Dil Desteği:** 4 (TR, EN, DE, ES)
 
 ---
 
-## 📈 BAŞARI METRİKLERİ (KPIs)
+## 🎬 SONRAKİ ADIM
 
-| Metrik | Hedef (Ay 1) | Hedef (Ay 6) |
-|--------|--------------|--------------|
-| DAU (Günlük Aktif) | 500 | 10,000 |
-| D7 Retention | 30% | 45% |
-| D30 Retention | 15% | 25% |
-| Premium Conversion | 2% | 5% |
-| Avg Session | 8 dk | 12 dk |
-| NPS Score | 40 | 60 |
-
----
-
-## 🎬 UYGULAMA PLANI
-
-### Bugün (09:51 - ?)
-1. ✅ Strateji planı oluştur
-2. 🔄 Günlük görev sistemi
-3. 🔄 Başarı/rozet sistemi  
-4. 🔄 Premium paywall & limit kontrolü
-5. 🔄 Seviye sistemi
-
-### Bu Hafta
-- Stripe/RevenueCat entegrasyonu
-- Push notification ayarları
-- App Store/Play Store hazırlık
-
-### Bu Ay
-- Türkiye lansmanı
-- Kullanıcı feedback toplama
-- A/B test başlatma
+**Şu an odaklanılacak:** Kalan egzersizlere useExerciseCompletion entegrasyonu
+- DAF
+- Teleprompter
+- Tongue-Twisters
+- Speech Analysis
+- Vocabulary

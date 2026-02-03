@@ -5,10 +5,11 @@ trigger: user_asks_recommendation
 
 # 💡 Feature Adviser
 
-1. **Scan:** Look at modified files.
-2. **Impact Analysis:**
-   - Will this slow down the app?
-   - Does it break existing tests?
-3. **Report:**
-   - Suggest 3 improvements (Performance, UX, Refactor).
-   - Estimate effort (Low/Medium/High).
+1) **Impact analysis**
+- Performance risk (extra renders, heavy queries, bundle impact)
+- Test risk (what might break)
+- Security risk (inputs, authz)
+
+2) **Report**
+- Suggest 3 improvements: (Perf, UX, Refactor)
+- Effort estimate: Low / Medium / High
