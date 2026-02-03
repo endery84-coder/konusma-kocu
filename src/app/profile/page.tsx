@@ -193,9 +193,10 @@ export default function ProfilePage() {
                     className="mt-4 bg-card rounded-2xl border border-border overflow-hidden"
                 >
                     {[
+                        { label: t('achievements.title') || 'Başarılar', href: '/achievements' },
+                        { label: t('leaderboard.title') || 'Sıralama', href: '/leaderboard' },
                         { label: t('settings.title'), href: '/settings' },
                         { label: t('settings.items.help'), href: '/help' },
-                        { label: t('settings.items.rate'), href: '#rate' },
                     ].map((item, index) => (
                         <button
                             key={item.label}

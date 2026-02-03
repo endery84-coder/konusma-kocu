@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Play, Pause, RotateCcw, Settings2, FastForward, Gauge, Type } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useExerciseCompletion } from '@/hooks/useExerciseCompletion';
+import { useConfetti } from '@/hooks/useConfetti';
 
 export default function RSVPExercisePage() {
     const router = useRouter();
@@ -17,6 +19,10 @@ export default function RSVPExercisePage() {
     const [text, setText] = useState("Hızlı okuma, metinleri daha kısa sürede anlamanızı sağlayan bir tekniktir. Göz kaslarınızı geliştirerek ve iç seslendirmeyi azaltarak okuma hızınızı artırabilirsiniz. Bu egzersiz, kelimeleri tek tek göstererek görsel algınızı hızlandırmayı amaçlar.");
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [showResults, setShowResults] = useState(false);
+    const [startTime, setStartTime] = useState<number>(0);
+
+    const { completeExercise } = useExerciseCompletion();
+    const { fireConfetti } = useConfetti();
 
     // Derived state
     const words = text.split(/\s+/).filter(w => w.length > 0);
@@ -30,7 +36,7 @@ export default function RSVPExercisePage() {
                 setCurrentWordIndex(prev => {
                     if (prev >= words.length - 1) {
                         setIsPlaying(false);
-                        setShowResults(true);
+                        handleExerciseComplete();
                         return prev;
                     }
                     return prev + 1;
@@ -40,6 +46,19 @@ export default function RSVPExercisePage() {
 
         return () => clearInterval(interval);
     }, [isPlaying, currentWordIndex, words.length, intervalMs]);
+
+    const handleExerciseComplete = async () => {
+        setShowResults(true);
+        const durationMinutes = Math.round((Date.now() - startTime) / 60000) || 1;
+
+        fireConfetti();
+
+        await completeExercise({
+            exerciseType: 'rsvp',
+            durationMinutes,
+            xpEarned: 30 + Math.floor(words.length / 10), // Bonus for longer texts
+        });
+    };
 
     const handleRestart = () => {
         setIsPlaying(false);
@@ -129,7 +148,12 @@ export default function RSVPExercisePage() {
                 </button>
 
                 <button
-                    onClick={() => setIsPlaying(!isPlaying)}
+                    onClick={() => {
+                        if (!isPlaying && currentWordIndex === 0) {
+                            setStartTime(Date.now());
+                        }
+                        setIsPlaying(!isPlaying);
+                    }}
                     className="p-6 bg-cyan-500 rounded-full shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:scale-105 active:scale-95 transition-all"
                 >
                     {isPlaying ? (

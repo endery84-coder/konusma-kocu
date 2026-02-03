@@ -6,6 +6,7 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ArrowLeft, Play, Pause, X, RotateCcw, Wind } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { useConfetti } from '@/hooks/useConfetti';
+import { useExerciseCompletion } from '@/hooks/useExerciseCompletion';
 
 type BreathingPhase = 'idle' | 'ready' | 'inhale' | 'hold-in' | 'exhale' | 'hold-out' | 'completed';
 
@@ -19,6 +20,7 @@ export default function BreathingExercisePage() {
     const [cycles, setCycles] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const { fireConfetti, fireStars } = useConfetti();
+    const { completeExercise } = useExerciseCompletion();
 
     // Audio refs (optional, placeholders for now)
     // const audioRef = useRef<HTMLAudioElement>(null);
@@ -84,9 +86,18 @@ export default function BreathingExercisePage() {
         setTotalTime(0);
     };
 
-    const stopExercise = () => {
+    const stopExercise = async () => {
         setIsActive(false);
         setPhase('completed');
+
+        // Track completion
+        const durationMinutes = Math.round(totalTime / 60);
+        await completeExercise({
+            exerciseType: 'breathing',
+            durationMinutes: durationMinutes || 1,
+            xpEarned: 25 + (cycles * 5), // Bonus XP per cycle
+        });
+
         // Fire celebration confetti
         setTimeout(() => {
             fireConfetti();

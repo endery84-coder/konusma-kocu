@@ -13,6 +13,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { dailyQuotes } from '@/lib/data/quotes';
 import { toast } from 'sonner';
 import { TIME_THRESHOLDS } from '@/lib/constants';
+import { DailyTasksWidget } from '@/components/DailyTasksWidget';
 
 export default function HomePage() {
   const router = useRouter();
@@ -223,6 +224,9 @@ export default function HomePage() {
           </div>
           <ChevronRight className="w-5 h-5 text-muted-foreground rtl-flip" />
         </motion.div>
+
+        {/* Daily Tasks Widget */}
+        <DailyTasksWidget />
 
         {/* Recommended Section */}
         <motion.div
