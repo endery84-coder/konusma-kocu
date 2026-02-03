@@ -7,6 +7,7 @@ import MobileContainer from "@/components/MobileContainer";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import OfflineBanner from "@/components/OfflineBanner";
 import PWAProvider from "@/components/PWAProvider";
+import { PushNotificationManager } from "@/components/PushNotificationManager";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <PWAProvider>
+              <PushNotificationManager />
               <MobileContainer>
                 {children}
               </MobileContainer>
