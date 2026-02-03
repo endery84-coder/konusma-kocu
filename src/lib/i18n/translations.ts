@@ -65,6 +65,13 @@ export const translations = {
             recent: "Son Kazanılan",
             none: "Bu kategoride rozet bulunamadı",
         },
+        level: {
+            level: "Seviye",
+            progress: "İlerleme",
+            toNextLevel: "sonraki seviye için",
+            remaining: "kaldı",
+            maxLevel: "Maksimum seviyeye ulaştın!",
+        },
         nav: {
             home: "Ana Sayfa",
             exercises: "Egzersizler",

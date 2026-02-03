@@ -14,6 +14,7 @@ import { dailyQuotes } from '@/lib/data/quotes';
 import { toast } from 'sonner';
 import { TIME_THRESHOLDS } from '@/lib/constants';
 import { DailyTasksWidget } from '@/components/DailyTasksWidget';
+import { LevelProgress } from '@/components/LevelProgress';
 
 export default function HomePage() {
   const router = useRouter();
@@ -144,8 +145,13 @@ export default function HomePage() {
             className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl cursor-pointer"
           >
             <Flame className="w-5 h-5 text-orange-300" />
-            <span className="text-white font-semibold">{streakDays}</span>
+            <span className="text-white font-bold">{streakDays}</span>
           </motion.div>
+        </div>
+
+        {/* Level Progress Bar */}
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 mb-4">
+          <LevelProgress totalXP={user?.total_xp || 0} showDetails={false} compact />
         </div>
 
         {/* Daily Goal Card */}

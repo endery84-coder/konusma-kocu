@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Settings, Crown, Flame, Clock, Trophy, ChevronRight, Camera } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { LevelCard } from '@/components/LevelProgress';
 
 export default function ProfilePage() {
     const router = useRouter();
@@ -162,6 +163,13 @@ export default function ProfilePage() {
                         ))}
                     </div>
                 </motion.div>
+
+                {/* Level Card */}
+                <LevelCard
+                    totalXP={user.totalXp}
+                    streak={user.streakDays}
+                    exercisesCompleted={user.completedExercises}
+                />
 
                 {/* Premium CTA */}
                 {!user.isPremium && (
